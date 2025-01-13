@@ -42,7 +42,7 @@ stages {
             steps {
                 script {
                     sh '''
-                    curl localhost
+                    curl http://localhost:8080/api/v1/movies/docs
                     '''
                 }
             }
