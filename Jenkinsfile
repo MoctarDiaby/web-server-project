@@ -47,6 +47,19 @@ stages {
                 }
             }
         }
+    stage('Uninstall'){
+           steps {
+            // Create an Approval Button with a timeout of 15minutes.
+            // this require a manuel validation in order to perform uninstall step
+                timeout(time: 15, unit: "MINUTES") {
+                    input message: 'Do you want to uninstall all ?', ok: 'Yes'
+                }
+
+                script {
+                    sh 'docker-compose down' 
+                }
+            }
+        }
     }
     post { // send email when the job has failed
         // ..
