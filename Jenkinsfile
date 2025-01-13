@@ -58,6 +58,9 @@ stages {
                 script {
                     sh 'docker-compose down' 
                 }
+                script {
+                    sh 'docker image rm jenkins_devops_exams-ci-cd_cast_service jenkins_devops_exams-ci-cd_movie_service' 
+                }   
             }
         }
     }
