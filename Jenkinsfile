@@ -8,7 +8,7 @@ agent any // Jenkins will be able to select all available agents
 stages {
         stage('Build Docker Image') {  
             steps{                     
-            sh 'docker-compose build'     
+            sh 'docker-compose up -d'     
             echo 'Docker-compose-build Build Image Completed'                
             }           
         }
