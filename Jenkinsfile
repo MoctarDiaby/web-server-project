@@ -43,6 +43,11 @@ stages {
             steps {
                 script {
                     sh '''
+                    sleep 180         // wait 3 minutes that services are up
+                    '''
+                }
+                script {
+                    sh '''
                     curl http://localhost:8001/api/v1/movies/docs
                     '''
                 }
