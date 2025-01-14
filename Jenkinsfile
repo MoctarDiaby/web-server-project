@@ -41,9 +41,9 @@ stages {
         stage('Test Acceptance')
         {                                // we launch the curl command to validate that the container responds to the request
             steps {
-                script {
+                script {                // wait 3 minutes that services are up
                     sh '''
-                    sleep 180         // wait 3 minutes that services are up
+                    sleep 180 
                     '''
                 }
                 script {
