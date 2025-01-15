@@ -96,7 +96,13 @@ stages {
                 script {
                     def casts_result = sh(script: "curl http://localhost:8002/api/v1/casts/1/", returnStdout: true)
                             
-                    echo "casts_result is: $casts_result"
+                    echo "casts_result is: " + casts_result
+                    if ( casts_result == '{"name":"abo","nationality":"FR","id":1}') {
+                            echo "casts_result result is ok: " + casts_result
+                    }
+                        else {
+                                echo "casts_result result is NOT ok: " + casts_result
+                        }
                 }
             }
         }
