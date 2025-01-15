@@ -78,6 +78,7 @@ stages {
                     '''
                 }
                 script {
+                     import groovy.json.JsonSlurper
                     def movies_result = sh(script: "curl http://localhost:8001/api/v1/movies/1/", returnStdout: true)
                     // echo "movies_result is: $movies_result"
                     // if ($movies_result != 200 && status != 201) {
