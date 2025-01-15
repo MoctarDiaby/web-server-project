@@ -69,7 +69,7 @@ stages {
                 }
                 script {
                     def casts_result = sh '''
-                     curl http://localhost:8002/api/v1/casts/docs
+                     curl http://34.242.248.107:8002/api/v1/casts/1/
                     '''
                     echo "casts_result is: ${casts_result}"
                 }
