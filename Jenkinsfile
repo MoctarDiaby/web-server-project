@@ -44,7 +44,7 @@ stages {
                  script {                // Create entries: name: abdelkader & nationality: dataScienst
                         sh '''
                            curl -X 'POST' \
-                                  'http://34.242.248.107:8001/api/v1/movies/' \
+                                  'http://localhost:8001/api/v1/movies/' \
                                   -H 'accept: application/json' \
                                   -H 'Content-Type: application/json' \
                                   -d '{
