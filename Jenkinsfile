@@ -41,25 +41,25 @@ stages {
         stage('Test Acceptance')
         {                                // we launch the curl command to validate that the container responds to the request
             steps {
-                 script {                // Create entries: name: abdelkader & nationality: dataScienst
-                        sh '''
-                           curl -X 'POST' \
-                                  'http://localhost:8001/api/v1/movies/' \
-                                  -H 'accept: application/json' \
-                                  -H 'Content-Type: application/json' \
-                                  -d '{
-                                          "name": "move",
-                                          "plot": "story",
-                                          "genres": [
-                                            "Action"
-                                          ],
-                                          "casts_id": [
-                                            1
-                                          ]
-                                }
-                     '''
+                // script {                // Create entries: name: abdelkader & nationality: dataScienst
+                //         sh '''
+                //            curl -X 'POST' \
+                //                   'http://localhost:8001/api/v1/movies/' \
+                //                   -H 'accept: application/json' \
+                //                   -H 'Content-Type: application/json' \
+                //                   -d '{
+                //                           "name": "move",
+                //                           "plot": "story",
+                //                           "genres": [
+                //                             "Action"
+                //                           ],
+                //                           "casts_id": [
+                //                             1
+                //                           ]
+                //                 }
+                //      '''
 
-                }
+                // }
                 script {                // Create entries: name: abdelkader & nationality: dataScienst
                         sh '''
                            curl -X 'POST' \
@@ -71,7 +71,6 @@ stages {
                           "nationality": "DataScienst"
                         }'
                      '''
-
                 }
                 script {                // wait 3 minutes that services are up
                     sh '''
