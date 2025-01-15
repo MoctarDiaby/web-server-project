@@ -50,14 +50,14 @@ stages {
                     def movies_result = sh '''
                     curl http://localhost:8001/api/v1/movies/docs
                     '''
+                    echo "casts_result is: ${movies_result}"
                 }
-                echo "casts_result is: ${movies_result}"
                 script {
                     def casts_result = sh '''
                      curl http://localhost:8002/api/v1/casts/docs
                     '''
+                    echo "casts_result is: ${casts_result}"
                 }
-               echo "casts_result is: ${casts_result}"
             }
         }
     stage('Uninstall'){
