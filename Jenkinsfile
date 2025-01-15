@@ -74,7 +74,7 @@ stages {
                 }
                 script {                // wait 3 minutes that services are up
                     sh '''
-                    sleep 60 
+                    sleep 10 
                     '''
                 }
                 script {
