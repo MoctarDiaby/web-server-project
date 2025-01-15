@@ -47,17 +47,17 @@ stages {
                     '''
                 }
                 script {
-                    sh '''
-                    movies_result = curl http://localhost:8001/api/v1/movies/docs
+                    def movies_result = sh '''
+                    curl http://localhost:8001/api/v1/movies/docs
                     '''
                 }
+                echo "casts_result is: ${movies_result}"
                 script {
-                    sh '''
-                     casts_result = curl http://localhost:8002/api/v1/casts/docs
-                     echo "casts_result is: "
-                     echo casts_result
+                    def casts_result = sh '''
+                     curl http://localhost:8002/api/v1/casts/docs
                     '''
                 }
+               echo "casts_result is: ${casts_result}"
             }
         }
     stage('Uninstall'){
