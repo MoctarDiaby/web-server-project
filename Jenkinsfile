@@ -78,7 +78,7 @@ stages {
                     '''
                 }
                 script {
-                    def movies_result = sh(script: "curl http://localhost:8001/api/v1/movies/docs", returnStdout: true)
+                    def movies_result = sh(script: "curl http://localhost:8001/api/v1/movies/1/", returnStdout: true)
                     // echo "movies_result is: $movies_result"
                     // if ($movies_result != 200 && status != 201) {
                     //         error("Returned status code = $movies_result")
@@ -86,7 +86,7 @@ stages {
                     echo "url command executed with success: $movies_result"
                 }
                 script {
-                    def casts_result = sh(script: "curl http://34.242.248.107:8002/api/v1/casts/1/", returnStdout: true)
+                    def casts_result = sh(script: "curl http://localhost:8002/api/v1/casts/1/", returnStdout: true)
                             
                     echo "casts_result is: $casts_result"
                 }
