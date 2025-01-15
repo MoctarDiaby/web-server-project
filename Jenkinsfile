@@ -41,6 +41,19 @@ stages {
         stage('Test Acceptance')
         {                                // we launch the curl command to validate that the container responds to the request
             steps {
+                script {                // Create entries: name: abdelkader & nationality: dataScienst
+                        sh '''
+                           curl -X 'POST' \
+                          'http://34.242.248.107:8002/api/v1/casts/' \
+                          -H 'accept: application/json' \
+                          -H 'Content-Type: application/json' \
+                          -d '{
+                          "name": "abdelkader",
+                          "nationality": "DataScienst"
+                        }'
+                     '''
+
+                }
                 script {                // wait 3 minutes that services are up
                     sh '''
                     sleep 60 
