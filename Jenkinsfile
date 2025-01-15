@@ -47,7 +47,7 @@ stages {
                     '''
                 }
                 script {
-                    def movies_result = sh ('curl http://localhost:8001/api/v1/movies/docs')
+                    def movies_result = sh ('curl http://localhost:8001/api/v1/movies/docs', returnStdout: true)
                     echo "movies_result is: ${movies_result}"
                 }
                 script {
