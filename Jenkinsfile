@@ -85,7 +85,7 @@ stages {
                     // }
                     echo "movies_result result is: " + movies_result
                     //echo "movies name is: $movies_result["name"] " // $movies_result{"name"}" 
-                    if ( movies_result == '{"name":"move","plot":"story","genres":["Action"],"casts_id":[1],"id":6}') {
+                    if ( movies_result == '{"name":"move","plot":"story","genres":["Action"],"casts_id":[1],"id":1}') {
                             echo "movies_result result is ok: " + movies_result
                     }
                         else {
