@@ -83,10 +83,10 @@ stages {
                     // if ($movies_result != 200 && status != 201) {
                     //         error("Returned status code = $movies_result")
                     // }
-                    echo "movies_result result is: $movies_result"
+                    echo "movies_result result is: " + movies_result
                     //echo "movies name is: $movies_result["name"] " // $movies_result{"name"}" 
-                    if ( $movies_result == '{"name":"move","plot":"story","genres":["Action"],"casts_id":[1],"id":6}') {
-                            echo "movies_result result is ok: $movies_result"
+                    if ( movies_result == '{"name":"move","plot":"story","genres":["Action"],"casts_id":[1],"id":6}') {
+                            echo "movies_result result is ok: " + movies_result
                     }
                         else {
                                 echo "movies_result result is NOT ok: $movies_result"
