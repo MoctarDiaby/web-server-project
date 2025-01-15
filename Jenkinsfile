@@ -52,6 +52,7 @@ stages {
                     if ($movies_result != 200 && status != 201) {
                             error("Returned status code = $movies_result")
                     }
+                    else {echo "url command executed with success"}
                 }
                 script {
                     def casts_result = sh '''
