@@ -85,11 +85,14 @@ stages {
                     //         error("Returned status code = $movies_result")
                     // }
                     echo "movies_result result is: $movies_result"
-                        echo "movies name is: $movies_result["name"] " // $movies_result{"name"}" 
-                    def json = new JsonSlurper().parseText($movies_result)
-
-                    // Affiche la valeur associée à "name"
-                   println(json.name)  // Résultat : abdelkader
+                    //echo "movies name is: $movies_result["name"] " // $movies_result{"name"}" 
+                    if ( $movies_result == {"name":"move","plot":"story","genres":["Action"],"casts_id":[1],"id":6}) {
+                            echo "movies_result result is ok: $movies_result"
+                    }
+                        else {
+                                echo "movies_result result is NOT ok: $movies_result"
+                        }
+                    
                 }
                 script {
                     def casts_result = sh(script: "curl http://localhost:8002/api/v1/casts/1/", returnStdout: true)
