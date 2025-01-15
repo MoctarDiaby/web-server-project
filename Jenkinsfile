@@ -83,7 +83,8 @@ stages {
                     // if ($movies_result != 200 && status != 201) {
                     //         error("Returned status code = $movies_result")
                     // }
-                    echo "url command executed with success: $movies_result"
+                    echo "movies_result result is: $movies_result"
+                        echo "movies name is: $movies_result{"name"}"
                 }
                 script {
                     def casts_result = sh(script: "curl http://localhost:8002/api/v1/casts/1/", returnStdout: true)
