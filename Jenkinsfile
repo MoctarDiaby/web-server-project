@@ -41,10 +41,29 @@ stages {
         stage('Test Acceptance')
         {                                // we launch the curl command to validate that the container responds to the request
             steps {
+                 script {                // Create entries: name: abdelkader & nationality: dataScienst
+                        sh '''
+                           curl -X 'POST' \
+                                  'http://34.242.248.107:8001/api/v1/movies/' \
+                                  -H 'accept: application/json' \
+                                  -H 'Content-Type: application/json' \
+                                  -d '{
+                                          "name": "move",
+                                          "plot": "story",
+                                          "genres": [
+                                            "Action"
+                                          ],
+                                          "casts_id": [
+                                            1
+                                          ]
+                                }
+                     '''
+
+                }
                 script {                // Create entries: name: abdelkader & nationality: dataScienst
                         sh '''
                            curl -X 'POST' \
-                          'http://34.242.248.107:8002/api/v1/casts/' \
+                          'http://localhost:8002/api/v1/casts/' \
                           -H 'accept: application/json' \
                           -H 'Content-Type: application/json' \
                           -d '{
@@ -68,9 +87,8 @@ stages {
                     echo "url command executed with success: $movies_result"
                 }
                 script {
-                    def casts_result = sh '''
-                     curl http://34.242.248.107:8002/api/v1/casts/1/
-                    '''
+                    def casts_result = sh(script: "curl http://34.242.248.107:8002/api/v1/casts/1/", returnStdout: true)
+                            
                     echo "casts_result is: $casts_result"
                 }
             }
