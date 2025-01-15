@@ -43,7 +43,7 @@ stages {
             steps {
                 script {                // wait 3 minutes that services are up
                     sh '''
-                    sleep 180 
+                    sleep 60 
                     '''
                 }
                 script {
