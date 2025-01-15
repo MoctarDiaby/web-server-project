@@ -47,8 +47,11 @@ stages {
                     '''
                 }
                 script {
-                    def movies_result = sh (script: 'curl http://localhost:8001/api/v1/movies/docs', returnStdout: true)
+                    int movies_result = sh (script: 'curl http://localhost:8001/api/v1/movies/docs', returnStdout: true)
                     echo "movies_result is: ${movies_result}"
+                    if ($movies_result != 200 && status != 201) {
+                            error("Returned status code = $movies_result")
+                    }
                 }
                 script {
                     def casts_result = sh '''
