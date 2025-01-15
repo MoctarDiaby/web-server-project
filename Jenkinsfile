@@ -48,12 +48,14 @@ stages {
                 }
                 script {
                     sh '''
-                    curl http://localhost:8001/api/v1/movies/docs
+                    movies_result = curl http://localhost:8001/api/v1/movies/docs
                     '''
                 }
                 script {
                     sh '''
-                    curl http://localhost:8002/api/v1/casts/docs
+                     casts_result = curl http://localhost:8002/api/v1/casts/docs
+                     echo "casts_result is: "
+                     echo casts_result
                     '''
                 }
             }
