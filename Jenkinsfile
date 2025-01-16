@@ -12,32 +12,6 @@ stages {
             echo 'Docker-compose-build Build Image Completed'                
             }           
         }
-
-        // stage('Deploiement en prod'){
-        //     environment {
-        //         KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
-        //     }
-        //     steps {
-        //     // Create an Approval Button with a timeout of 15minutes.
-        //     // this require a manuel validation in order to deploy on production environment
-        //         timeout(time: 15, unit: "MINUTES") {
-        //             input message: 'Do you want to deploy in production ?', ok: 'Yes'
-        //         }
-
-        //         script {
-        //             sh '''
-        //             rm -Rf .kube
-        //             mkdir .kube
-        //             ls
-        //             cat $KUBECONFIG > .kube/config
-        //             cp fastapi/values.yaml values.yml
-        //             cat values.yml
-        //             sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-        //             helm upgrade --install app fastapi --values=values.yml --namespace prod
-        //             '''
-        //         }
-        //     }
-        // }
         stage('Test Acceptance')
         {                                // we launch the curl command to validate that the container responds to the request
             steps {
@@ -104,6 +78,22 @@ stages {
                                 echo "casts_result result is NOT ok: " + casts_result
                         }
                 }
+            }
+        }
+    stage('Deploiement en prod'){
+            environment {
+               // KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            }
+            steps {
+                            // Create an Approval Button with a timeout of 15minutes.
+                            // this require a manuel validation in order to deploy on production environment
+                timeout(time: 15, unit: "MINUTES") {
+                    input message: 'Do you want to deploy in production ?', ok: 'Yes'
+                }
+                steps{                     
+                        sh 'docker-compose up -d'     
+                        echo 'Docker-compose-build Build Image Completed'                
+                    }    
             }
         }
     stage('Uninstall'){
