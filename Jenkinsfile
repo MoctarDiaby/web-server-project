@@ -41,6 +41,11 @@ stages {
         stage('Test Acceptance')
         {                                // we launch the curl command to validate that the container responds to the request
             steps {
+                script {                // wait 3 minutes that services are up
+                    sh '''
+                    sleep 60
+                    '''
+                }
                 script {                // Create entries: name: abdelkader & nationality: dataScienst
                         sh '''
                            curl -X 'POST' \
@@ -71,11 +76,6 @@ stages {
                           "nationality": "DataScienst"
                         }'
                      '''
-                }
-                script {                // wait 3 minutes that services are up
-                    sh '''
-                    sleep 10 
-                    '''
                 }
                 script {
                     def movies_result = sh(script: "curl http://localhost:8001/api/v1/movies/1/", returnStdout: true)
