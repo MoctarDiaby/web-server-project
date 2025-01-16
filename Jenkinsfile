@@ -8,9 +8,16 @@ agent any // Jenkins will be able to select all available agents
 stages {
         stage('Build Docker Image') {  
             steps{                     
-            sh 'docker-compose up -d'     
-            echo 'Docker-compose-build Build Image Completed'                
+            // sh 'docker-compose up -d'     
+            // echo 'Docker-compose-build Build Image Completed'                
             }           
+                3 - movie_service:
+                1 - movie_db
+                4 - cast_service
+                2 - cast_db
+                5 - nginx
+                        
+                
         }
         stage('Test Acceptance')
         {                                // we launch the curl command to validate that the container responds to the request
@@ -77,6 +84,21 @@ stages {
                         else {
                                 echo "casts_result result is NOT ok: " + casts_result
                         }
+                }
+            }
+        }
+    stage('Docker Push'){ //we pass the built image to our docker hub account
+            environment
+            {
+                DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+            }
+
+            steps {
+                script {
+                sh '''
+                docker login -u $DOCKER_ID -p $DOCKER_PASS
+                // docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                '''
                 }
             }
         }
