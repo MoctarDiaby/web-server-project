@@ -8,36 +8,110 @@ agent any // Jenkins will be able to select all available agents
 stages {
         stage('Build Docker Image') {  
             steps{                     
-            sh 'docker-compose build'     
+            sh 'docker-compose up -d'     
             echo 'Docker-compose-build Build Image Completed'                
             }           
         }
+        stage('Test Acceptance')
+        {                                // we launch the curl command to validate that the container responds to the request
+            steps {
+                script {                // wait 3 minutes that services are up
+                    sh '''
+                    sleep 60
+                    '''
+                }
+                script {                // Create entries: name: abdelkader & nationality: dataScienst
+                        sh '''
+                           curl -X 'POST' \
+                                  'http://localhost:8001/api/v1/movies/' \
+                                  -H 'accept: application/json' \
+                                  -H 'Content-Type: application/json' \
+                                  -d '{
+                                          "name": "move",
+                                          "plot": "story",
+                                          "genres": [
+                                            "Action"
+                                          ],
+                                          "casts_id": [
+                                            1
+                                          ]
+                                }'
+                     '''
 
-        // stage('Deploiement en prod'){
-        //     environment {
-        //         KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
-        //     }
-        //     steps {
-        //     // Create an Approval Button with a timeout of 15minutes.
-        //     // this require a manuel validation in order to deploy on production environment
-        //         timeout(time: 15, unit: "MINUTES") {
-        //             input message: 'Do you want to deploy in production ?', ok: 'Yes'
-        //         }
+                }
+                script {                // Create entries: name: abdelkader & nationality: dataScienst
+                        sh '''
+                           curl -X 'POST' \
+                          'http://localhost:8002/api/v1/casts/' \
+                          -H 'accept: application/json' \
+                          -H 'Content-Type: application/json' \
+                          -d '{
+                          "name": "abdelkader",
+                          "nationality": "DataScienst"
+                        }'
+                     '''
+                }
+                script {
+                    def movies_result = sh(script: "curl http://localhost:8001/api/v1/movies/1/", returnStdout: true)
+                    // echo "movies_result is: $movies_result"
+                    // if ($movies_result != 200 && status != 201) {
+                    //         error("Returned status code = $movies_result")
+                    // }
+                    echo "movies_result result is: " + movies_result
+                    //echo "movies name is: $movies_result["name"] " // $movies_result{"name"}" 
+                    if ( movies_result == '{"name":"move","plot":"story","genres":["Action"],"casts_id":[1],"id":1}') {
+                            echo "movies_result result is ok: " + movies_result
+                    }
+                        else {
+                                echo "movies_result result is NOT ok: $movies_result"
+                        }
+                    
+                }
+                script {
+                    def casts_result = sh(script: "curl http://localhost:8002/api/v1/casts/1/", returnStdout: true)
+                            
+                    echo "casts_result is: " + casts_result
+                    if ( casts_result == '{"name":"abo","nationality":"FR","id":1}') {
+                            echo "casts_result result is ok: " + casts_result
+                    }
+                        else {
+                                echo "casts_result result is NOT ok: " + casts_result
+                        }
+                }
+            }
+        }
+    stage('Deploiement en prod'){
+            environment {
+               // KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            }
+            steps {
+                            // Create an Approval Button with a timeout of 15minutes.
+                            // this require a manuel validation in order to deploy on production environment
+                timeout(time: 15, unit: "MINUTES") {
+                    input message: 'Do you want to deploy in production ?', ok: 'Yes'
+                }
+                steps{                     
+                        sh 'docker-compose up -d'     
+                        echo 'Docker-compose-build Build Image Completed'                
+                    }    
+            }
+        }
+    stage('Uninstall'){
+           steps {
+            // Create an Approval Button with a timeout of 15minutes.
+            // this require a manuel validation in order to perform uninstall step
+                timeout(time: 15, unit: "MINUTES") {
+                    input message: 'Do you want to uninstall all ?', ok: 'Yes'
+                }
 
-        //         script {
-        //             sh '''
-        //             rm -Rf .kube
-        //             mkdir .kube
-        //             ls
-        //             cat $KUBECONFIG > .kube/config
-        //             cp fastapi/values.yaml values.yml
-        //             cat values.yml
-        //             sed -i "s+tag.*+tag: ${DOCKER_TAG}+g" values.yml
-        //             helm upgrade --install app fastapi --values=values.yml --namespace prod
-        //             '''
-        //         }
-        //     }
-        // }
+                script {
+                    sh 'docker-compose down' 
+                }
+                script {
+                    sh 'docker image rm jenkins_devops_exams-ci-cd_cast_service jenkins_devops_exams-ci-cd_movie_service' 
+                }   
+            }
+        }
     }
     post { // send email when the job has failed
         // ..
