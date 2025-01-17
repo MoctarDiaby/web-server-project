@@ -4,6 +4,7 @@ DOCKER_ID = "abou67" // replace this with your docker-id
 // DOCKER_IMAGE = "datascientestapi"
 DOCKER_IMAGE = "movie-db"
 DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
+NAMESPACE="q"
 }
 agent any // Jenkins will be able to select all available agents
 stages {
@@ -27,9 +28,18 @@ stages {
               steps {
                       script {                // build Deploy movie_db
                                 sh '''
+                                    cd movie-service
                                     docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
+                                    push_image_docker_hub ($DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG)
+                                    cd ~
                                 '''
                         }
+                      
+                      // script {                // build Deploy movie_db
+                      //           sh '''
+                      //               kubectl apply -f movie-db-deployment.yaml -n $NAMESPACE
+                      //           '''
+                      //   }
                 }
         }
         // stage('Test Acceptance')
@@ -158,4 +168,25 @@ stages {
     //     }
     //     // ..
     // }
+}
+
+//------------------ ------------------ ------------------  
+//------------------------ Functions ---------------------
+//------------------ ------------------ ------------------ 
+// ------------------- pull image
+def push_image_docker_hub (image, user_password, user_roles)
+{
+     environment
+    {
+        DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+    }
+
+    steps {
+        script {
+                sh '''
+                docker login -u $DOCKER_ID -p $DOCKER_PASS
+                docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                '''
+                }
+        }
 }
