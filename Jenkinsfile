@@ -110,47 +110,47 @@ stages {
     //             }
     //         }
     //     }
-    stage('Deploiement en prod'){
-            // environment {
-            //    // KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
-            // }
-            steps {
-                            // Create an Approval Button with a timeout of 15minutes.
-                            // this require a manuel validation in order to deploy on production environment
-                timeout(time: 15, unit: "MINUTES") {
-                    input message: 'Do you want to deploy in production ?', ok: 'Yes'
-                }
-                steps{                     
-                        sh 'docker-compose up -d'     
-                        echo 'Docker-compose-build Build Image Completed'                
-                    }    
-            }
-        }
-    stage('Uninstall'){
-           steps {
-            // Create an Approval Button with a timeout of 15minutes.
-            // this require a manuel validation in order to perform uninstall step
-                timeout(time: 15, unit: "MINUTES") {
-                    input message: 'Do you want to uninstall all ?', ok: 'Yes'
-                }
+    // stage('Deploiement en prod'){
+    //         // environment {
+    //         //    // KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+    //         // }
+    //         steps {
+    //                         // Create an Approval Button with a timeout of 15minutes.
+    //                         // this require a manuel validation in order to deploy on production environment
+    //             timeout(time: 15, unit: "MINUTES") {
+    //                 input message: 'Do you want to deploy in production ?', ok: 'Yes'
+    //             }
+    //             steps{                     
+    //                     sh 'docker-compose up -d'     
+    //                     echo 'Docker-compose-build Build Image Completed'                
+    //                 }    
+    //         }
+    //     }
+    // stage('Uninstall'){
+    //        steps {
+    //         // Create an Approval Button with a timeout of 15minutes.
+    //         // this require a manuel validation in order to perform uninstall step
+    //             timeout(time: 15, unit: "MINUTES") {
+    //                 input message: 'Do you want to uninstall all ?', ok: 'Yes'
+    //             }
 
-                script {
-                    sh 'docker-compose down' 
-                }
-                script {
-                    sh 'docker image rm jenkins_devops_exams-ci-cd_cast_service jenkins_devops_exams-ci-cd_movie_service' 
-                }   
-            }
-        }
-    }
-    post { // send email when the job has failed
-        // ..
-        failure {
-            echo "This will run if the job failed"
-            mail to: "abdelkader.boumediene@gmail.com",
-                subject: "${env.JOB_NAME} - Build # ${env.BUILD_ID} has failed",
-                body: "For more info on the pipeline failure, check out the console output at ${env.BUILD_URL}"
-        }
-        // ..
-    }
+    //             script {
+    //                 sh 'docker-compose down' 
+    //             }
+    //             script {
+    //                 sh 'docker image rm jenkins_devops_exams-ci-cd_cast_service jenkins_devops_exams-ci-cd_movie_service' 
+    //             }   
+    //         }
+    //     }
+    // }
+    // post { // send email when the job has failed
+    //     // ..
+    //     failure {
+    //         echo "This will run if the job failed"
+    //         mail to: "abdelkader.boumediene@gmail.com",
+    //             subject: "${env.JOB_NAME} - Build # ${env.BUILD_ID} has failed",
+    //             body: "For more info on the pipeline failure, check out the console output at ${env.BUILD_URL}"
+    //     }
+    //     // ..
+    // }
 }
