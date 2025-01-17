@@ -19,12 +19,12 @@ stages {
         //}
         stage('Deploy movie-db')
         { 
-                steps {
-                        environment
+              environment
                             {
                                 DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
                             }
-                        script {                // build Deploy movie_db
+              steps {
+                      script {                // build Deploy movie_db
                                 sh '''
                                     // docker build -t movie-db
                                     docker login -u $DOCKER_ID -p $DOCKER_PASS
