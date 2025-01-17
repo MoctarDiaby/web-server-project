@@ -22,7 +22,8 @@ stages {
                 steps {
                         script {                // build Deploy movie_db
                                 sh '''
-                                    docker build -t movie-db
+                                    // docker build -t movie-db
+                                    docker build -t $DOCKER_ID/movie-db:$DOCKER_TAG .
                                 '''
                         }
                 }
