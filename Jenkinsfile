@@ -2,6 +2,7 @@ pipeline {
 environment { // Declaration of environment variables
 DOCKER_ID = "abou67" // replace this with your docker-id
 DOCKER_IMAGE = "datascientestapi"
+DOCKER_IMAGE = "movie-db"
 DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
 }
 agent any // Jenkins will be able to select all available agents
@@ -28,7 +29,7 @@ stages {
                                 sh '''
                                     // docker build -t movie-db
                                     docker login -u $DOCKER_ID -p $DOCKER_PASS
-                                    docker build -t $DOCKER_ID/movie-db:$DOCKER_TAG .
+                                    docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
                                 '''
                         }
                 }
