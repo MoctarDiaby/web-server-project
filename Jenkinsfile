@@ -16,7 +16,7 @@ stages {
         //         4 - cast_service
         //         2 - cast_db
         //         5 - nginx              
-        }
+        //}
         stage('Deploy movie-db')
         { 
                 steps {
