@@ -22,13 +22,13 @@ stages {
         { 
               environment
                             {
-                                DOCKER_PASS = 'Ph3pYT*WZwYZ#5v' // credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+                                DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
                             }
               steps {
                       script {                // build Deploy movie_db
                                 sh '''
                                     // docker build -t movie-db
-                                    docker login -u $DOCKER_ID -p $DOCKER_PASS
+                                    // docker login -u $DOCKER_ID -p $DOCKER_PASS
                                     docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
                                 '''
                         }
