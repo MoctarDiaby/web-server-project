@@ -24,15 +24,21 @@ stages {
               environment
                             {
                                 DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+                                DOCKER_IMAGE = "postgres:12.1-alpine"
                             }
               steps {
-                      script {                // build Deploy movie_db
+                      script 
+                      {                // build Deploy movie_db with postgres:12.1-alpine
                                 sh '''
                                     cd movie-service
                                     docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
                                     cd ~
                                 '''
-                        }
+                    }
+                    script 
+                    {
+                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG", DOCKER_ID , DOCKER_PASS)
+                    }
                       
                       // script {                // build Deploy movie_db
                       //           sh '''
@@ -41,16 +47,16 @@ stages {
                       //   }
                 }
         }
-        stage ('push_image_docker_hub: ') // + $DOCKER_IMAGE:$DOCKER_TAG )
-        {
-                environment
-                    {
-                        DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
-                    }
-                steps {
-                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG", DOCKER_ID , DOCKER_PASS)
-                      }
-        }
+        // stage ('push_image_docker_hub: ') // + $DOCKER_IMAGE:$DOCKER_TAG )
+        // {
+        //         environment
+        //             {
+        //                 DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+        //             }
+        //         steps {
+        //                  push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG", DOCKER_ID , DOCKER_PASS)
+        //               }
+        // }
         // stage('Test Acceptance')
         // {                                // we launch the curl command to validate that the container responds to the request
         //     steps {
@@ -185,7 +191,7 @@ stages {
 // ------------------- pull image
 def push_image_docker_hub (image, docker_user, docker_password)
 {
-    stage('Docker Push')
+    stage('Docker Push' + image)
     {
         environment
             {
