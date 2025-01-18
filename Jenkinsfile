@@ -30,7 +30,6 @@ stages {
                                 sh '''
                                     cd movie-service
                                     docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
-                                    push_image_docker_hub ($DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG)
                                     cd ~
                                 '''
                         }
@@ -41,6 +40,12 @@ stages {
                       //           '''
                       //   }
                 }
+        }
+        stage ('push_image_docker_hub: ') // + $DOCKER_IMAGE:$DOCKER_TAG )
+        {
+                steps {
+                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG")
+                      }
         }
         // stage('Test Acceptance')
         // {                                // we launch the curl command to validate that the container responds to the request
@@ -174,14 +179,16 @@ stages {
 //------------------------ Functions ---------------------
 //------------------ ------------------ ------------------ 
 // ------------------- pull image
-def push_image_docker_hub (image, user_password, user_roles)
+def push_image_docker_hub (image)
 {
      environment
     {
         DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
     }
-
     steps {
+        script {
+                     echo "----- pushing image " + image + "password "   + DOCKER_PASS
+                }
         script {
                 sh '''
                 docker login -u $DOCKER_ID -p $DOCKER_PASS
