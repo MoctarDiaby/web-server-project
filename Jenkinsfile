@@ -1,11 +1,11 @@
 pipeline {
 environment { // Declaration of environment variables
-DOCKER_ID = "abou67" // replace this with your docker-id
-// DOCKER_IMAGE = "datascientestapi"
-DOCKER_IMAGE = "movie-db"
-DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
-NAMESPACE="q"
-}
+                DOCKER_ID = "abou67" // replace this with your docker-id
+                // DOCKER_IMAGE = "datascientestapi"
+                DOCKER_IMAGE = "movie-db"
+                DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
+                NAMESPACE="q"
+        }
 agent any // Jenkins will be able to select all available agents
 stages {
         // stage('Build Docker Image') {  
@@ -43,8 +43,12 @@ stages {
         }
         stage ('push_image_docker_hub: ') // + $DOCKER_IMAGE:$DOCKER_TAG )
         {
+                environment
+                    {
+                        DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+                    }
                 steps {
-                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG")
+                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG", DOCKER_ID , DOCKER_PASS)
                       }
         }
         // stage('Test Acceptance')
@@ -179,21 +183,24 @@ stages {
 //------------------------ Functions ---------------------
 //------------------ ------------------ ------------------ 
 // ------------------- pull image
-def push_image_docker_hub (image)
+def push_image_docker_hub (image, docker_user, docker_password)
 {
-     environment
+    stage('Docker Push')
     {
-        DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
-    }
-    steps {
-        script {
-                     echo "----- pushing image " + image + "password "   + DOCKER_PASS
-                }
-        script {
+        environment
+            {
+                DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+            }
+        script 
+        {
+                     echo "----- pushing image " + image + "password "   + docker_password + " " + DOCKER_PASS
+        }
+        script 
+        {
                 sh '''
                 docker login -u $DOCKER_ID -p $DOCKER_PASS
                 docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
                 '''
-                }
         }
+   }
 }
