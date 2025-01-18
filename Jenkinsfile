@@ -5,25 +5,21 @@ environment { // Declaration of environment variables
                 DOCKER_IMAGE = "movie-db"
                 DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
                 NAMESPACE="q"
+                DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
         }
 agent any // Jenkins will be able to select all available agents
 stages {
-        // stage('Build Docker Image') {  
-        //     steps{                     
-        //     // sh 'docker-compose up -d'     
-        //     // echo 'Docker-compose-build Build Image Completed'                
-        //     }           
-        //         3 - movie_service
+        
         //         1 - movie_db
-        //         4 - cast_service
         //         2 - cast_db
+        //         3 - movie_service
+        //         4 - cast_service
         //         5 - nginx              
-        //}
+        //
         stage('Deploy movie-db')
         { 
               environment
                             {
-                                DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
                                 DOCKER_IMAGE = "postgres:12.1-alpine"
                             }
               steps {
@@ -31,32 +27,38 @@ stages {
                       {                // build Deploy movie_db with postgres:12.1-alpine
                                 sh '''
                                     cd movie-service
-                                    docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG .
+                                    docker build -t $DOCKER_ID/$DOCKER_IMAGE .
                                     cd ~
                                 '''
                     }
                     script 
                     {
-                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG", DOCKER_ID , DOCKER_PASS)
+                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE")
                     }
-                      
-                      // script {                // build Deploy movie_db
-                      //           sh '''
-                      //               kubectl apply -f movie-db-deployment.yaml -n $NAMESPACE
-                      //           '''
-                      //   }
-                }
+              }
         }
-        // stage ('push_image_docker_hub: ') // + $DOCKER_IMAGE:$DOCKER_TAG )
-        // {
-        //         environment
-        //             {
-        //                 DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
-        //             }
-        //         steps {
-        //                  push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG", DOCKER_ID , DOCKER_PASS)
-        //               }
-        // }
+        stage('Deploy cast-db')
+        { 
+              environment
+                            {
+                                DOCKER_IMAGE = "postgres:12.1-alpine"
+                            }
+              steps {
+                      script 
+                      {                // build Deploy cast_db with postgres:12.1-alpine
+                                sh '''
+                                    cd cast-service
+                                    docker build -t $DOCKER_ID/$DOCKER_IMAGE .
+                                    cd ~
+                                '''
+                    }
+                    script 
+                    {
+                         push_image_docker_hub ("$DOCKER_ID/$DOCKER_IMAGE")
+                    }
+              }
+        }
+        
         // stage('Test Acceptance')
         // {                                // we launch the curl command to validate that the container responds to the request
         //     steps {
@@ -189,23 +191,23 @@ stages {
 //------------------------ Functions ---------------------
 //------------------ ------------------ ------------------ 
 // ------------------- pull image
-def push_image_docker_hub (image, docker_user, docker_password)
+def push_image_docker_hub (image)
 {
-    stage('Docker Push' + image)
+    stage('Docker Push image: ' + image)
     {
-        environment
-            {
-                DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
-            }
         script 
         {
-                     echo "----- pushing image " + image + "password "   + docker_password + " " + DOCKER_PASS
+            echo "----- pushing image " + image 
+        }
+        script 
+        {
+            echo "----- pushing image " + image 
         }
         script 
         {
                 sh '''
                 docker login -u $DOCKER_ID -p $DOCKER_PASS
-                docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG
+                docker push $DOCKER_ID/$DOCKER_IMAGE
                 '''
         }
    }
