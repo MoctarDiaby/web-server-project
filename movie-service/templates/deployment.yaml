@@ -30,5 +30,5 @@ spec:
       volumes:
         - name: movie-service-volume
           hostPath:
-            path: /path/to/local/movie-service
+            path: ./cast-service/
             type: Directory
