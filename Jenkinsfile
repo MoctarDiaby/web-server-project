@@ -7,6 +7,7 @@ pipeline
                       DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
                       NAMESPACE="q"
                       DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
+                      KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
               }
       agent any // Jenkins will be able to select all available agents
       stages 
@@ -22,7 +23,7 @@ pipeline
               { 
                       environment
                                   {
-                                      DOCKER_IMAGE = "postgres:12.1-alpine"
+                                      DOCKER_IMAGE = "movie_db"
                                   }
                       steps {
                             script 
@@ -43,7 +44,7 @@ pipeline
               { 
                     environment
                                   {
-                                      DOCKER_IMAGE = "postgres:12.1-alpine"
+                                      DOCKER_IMAGE = "cast_db"
                                   }
                     steps {
                             script 
@@ -62,125 +63,101 @@ pipeline
               }
               stage('Deploy movie_service')
               {
-                  script 
+                       steps
+                       {
+                            script 
+                            {
+                                  sh '''
+                                  ls ./movie-service
+                                  '''
+                            }
+                      }
+              }
+              stage('Deploy Service to Kubernetes') 
+              {
+                   environment 
                   {
-                        sh '''
-                            ls ./movie-service
-                        '''
-                  }
-      
-              }
-              // stage('Test Acceptance')
-              // {                                // we launch the curl command to validate that the container responds to the request
-              //     steps {
-              //         script {                // wait 3 minutes that services are up
-              //             sh '''
-              //             sleep 60
-              //             '''
-              //         }
-              //         script {                // Create entries: name: abdelkader & nationality: dataScienst
-              //                 sh '''
-              //                    curl -X 'POST' \
-              //                           'http://localhost:8001/api/v1/movies/' \
-              //                           -H 'accept: application/json' \
-              //                           -H 'Content-Type: application/json' \
-              //                           -d '{
-              //                                   "name": "move",
-              //                                   "plot": "story",
-              //                                   "genres": [
-              //                                     "Action"
-              //                                   ],
-              //                                   "casts_id": [
-              //                                     1
-              //                                   ]
-              //                         }'
-              //              '''
-      
-              //         }
-              //         script {                // Create entries: name: abdelkader & nationality: dataScienst
-              //                 sh '''
-              //                    curl -X 'POST' \
-              //                   'http://localhost:8002/api/v1/casts/' \
-              //                   -H 'accept: application/json' \
-              //                   -H 'Content-Type: application/json' \
-              //                   -d '{
-              //                   "name": "abdelkader",
-              //                   "nationality": "DataScienst"
-              //                 }'
-              //              '''
-              //         }
-              //         script {
-              //             def movies_result = sh(script: "curl http://localhost:8001/api/v1/movies/1/", returnStdout: true)
-              //             // echo "movies_result is: $movies_result"
-              //             // if ($movies_result != 200 && status != 201) {
-              //             //         error("Returned status code = $movies_result")
-              //             // }
-              //             echo "movies_result result is: " + movies_result
-              //             //echo "movies name is: $movies_result["name"] " // $movies_result{"name"}" 
-              //             if ( movies_result == '{"name":"move","plot":"story","genres":["Action"],"casts_id":[1],"id":1}') {
-              //                     echo "movies_result result is ok: " + movies_result
-              //             }
-              //                 else {
-              //                         echo "movies_result result is NOT ok: $movies_result"
-              //                 }
+                          //KUBECONFIG = credentials('kubeconfig-credential-id') // Remplacez par l'ID Jenkins du kubeconfig
+                          SERVICE_YAML = 'movie-service-service.yaml' // Nom du fichier contenant la définition du service
+                          NAMESPACE = 'qa' // Namespace cible
+                  } 
+                  steps 
+                  {
+                      script 
+                      {
+                          // Vérifier que le fichier YAML existe dans le dépôt
+                          sh "ls -l ${SERVICE_YAML}"
                           
-              //         }
-              //         script {
-              //             def casts_result = sh(script: "curl http://localhost:8002/api/v1/casts/1/", returnStdout: true)
-                                  
-              //             echo "casts_result is: " + casts_result
-              //             if ( casts_result == '{"name":"abo","nationality":"FR","id":1}') {
-              //                     echo "casts_result result is ok: " + casts_result
-              //             }
-              //                 else {
-              //                         echo "casts_result result is NOT ok: " + casts_result
-              //                 }
-              //         }
-              //     }
-              // }
-          // stage('Deploiement en prod'){
-          //         // environment {
-          //         //    // KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
-          //         // }
-          //         steps {
-          //                         // Create an Approval Button with a timeout of 15minutes.
-          //                         // this require a manuel validation in order to deploy on production environment
-          //             timeout(time: 15, unit: "MINUTES") {
-          //                 input message: 'Do you want to deploy in production ?', ok: 'Yes'
-          //             }
-          //             steps{                     
-          //                     sh 'docker-compose up -d'     
-          //                     echo 'Docker-compose-build Build Image Completed'                
-          //                 }    
-          //         }
-          //     }
-          // stage('Uninstall'){
-          //        steps {
-          //         // Create an Approval Button with a timeout of 15minutes.
-          //         // this require a manuel validation in order to perform uninstall step
-          //             timeout(time: 15, unit: "MINUTES") {
-          //                 input message: 'Do you want to uninstall all ?', ok: 'Yes'
-          //             }
-      
-          //             script {
-          //                 sh 'docker-compose down' 
-          //             }
-          //             script {
-          //                 sh 'docker image rm jenkins_devops_exams-ci-cd_cast_service jenkins_devops_exams-ci-cd_movie_service' 
-          //             }   
-          //         }
-          //     }
-      }
-          post { // send email when the job has failed
-              // ..
-              failure {
-                  echo "This will run if the job failed"
-                  mail to: "abdelkader.boumediene@gmail.com",
-                      subject: "${env.JOB_NAME} - Build # ${env.BUILD_ID} has failed",
-                      body: "For more info on the pipeline failure, check out the console output at ${env.BUILD_URL}"
+                          // Appliquer le fichier YAML dans le namespace spécifié
+                          //withKubeConfig([credentialsId: 'kubeconfig-credential-id']) 
+                          //{
+                              sh "kubectl apply -f ${SERVICE_YAML} -n ${NAMESPACE}"
+                          //}
+                      }
               }
-              // ..
+          }
+          stage('Deploy movie-service') 
+          {
+                  environment
+                  {
+                                HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
+                                KUBECONFIG = credentials('kubeconfig-credential-id') // Jenkins kubeconfig credentials ID
+                                HELM_RELEASE_NAME = 'move-service' // Helm release name
+                                NAMESPACE = 'qa' // Target namespace
+                                CHART_DIR = './movie-service' // Path to Helm chart directory
+                  }
+                  steps 
+                  {
+                      script 
+                      {
+                              sh """
+                              rm -Rf .kube
+                              mkdir .kube
+                              cat $KUBECONFIG > .kube/config
+                              helm upgrade --install ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                              --namespace ${NAMESPACE} \
+                              --set namespace=${NAMESPACE}
+                              """
+                     }
+                }
+          }
+        stage('Deploy cast-service') 
+          {
+                  environment
+                  {
+                                HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
+                                KUBECONFIG = credentials('kubeconfig-credential-id') // Jenkins kubeconfig credentials ID
+                                HELM_RELEASE_NAME = 'cast-service' // Helm release name
+                                NAMESPACE = 'qa' // Target namespace
+                                CHART_DIR = './cast-service' // Path to Helm chart directory
+                  }
+                  steps 
+                  {
+                      script 
+                      {
+                              sh """
+                              rm -Rf .kube
+                              mkdir .kube
+                              cat $KUBECONFIG > .kube/config
+                              helm upgrade --install ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                              --namespace ${NAMESPACE} \
+                              --set namespace=${NAMESPACE}
+                              """
+                     }
+                }
+          }
       } // END_stages
+    //   post 
+    //   { // send email when the job has failed
+    //     // ..
+    //     failure 
+    //     {
+    //         echo "This will run if the job failed"
+    //         mail to: "abdelkader.boumediene@gmail.com",
+    //             subject: "${env.JOB_NAME} - Build # ${env.BUILD_ID} has failed",
+    //             body: "For more info on the pipeline failure, check out the console output at ${env.BUILD_URL}"
+    //   }
+    // } // END_ post
 } // END_pipeline
       
 //------------------ ------------------ ------------------  
