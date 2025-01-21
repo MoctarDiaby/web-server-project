@@ -7,7 +7,7 @@ image:
 
 service:
   type: ClusterIP
-  port: 8001
+  port: 8002
   targetPort: 8000
 
 env:
