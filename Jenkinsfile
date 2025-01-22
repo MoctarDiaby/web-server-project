@@ -29,6 +29,11 @@ pipeline
                       {
                           input message: 'Do you want to deploy in production ?', ok: 'Yes'
                       }
+                      if ("${BRANCH}" != "master" && "${NAMESPACE}" == "prod")
+                      {
+                            echo "branch is [${NAMESPACE}] and namespace is [${NAMESPACE}], so we stop deployments !!!!"
+                            return
+                      } //if
                   }
               } // END_stage('Deploiement en prod')
               stage('Deploy movie-db')
