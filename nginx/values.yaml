@@ -1,8 +1,8 @@
 nginx:
   image: nginx:latest
   ports:
-    containerPort: 8080
-    servicePort: 8080
+    containerPort: 8090
+    servicePort: 8090
   volumes:
     config: ./nginx_config.conf
   dependencies:
