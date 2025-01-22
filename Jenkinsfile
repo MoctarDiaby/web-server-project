@@ -61,20 +61,8 @@ pipeline
                           }
                     }
               }
-              stage('Deploy movie_service')
+              stage('Deploy movie-service') 
               {
-                       steps
-                       {
-                            script 
-                            {
-                                  sh '''
-                                  ls ./movie-service
-                                  '''
-                            }
-                      }
-              }
-            stage('Deploy movie-service') 
-            {
                   environment
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
