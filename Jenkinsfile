@@ -23,7 +23,7 @@ pipeline
               {
                   steps
                   {
-                        step
+                        script
                         {
                               
                                     // Create an Approval Button with a timeout of 15minutes.
