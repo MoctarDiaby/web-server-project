@@ -5,7 +5,7 @@ pipeline
                       // DOCKER_IMAGE = "datascientestapi"
                       DOCKER_IMAGE = "movie-db"
                       DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
-                      NAMESPACE="q"
+                      NAMESPACE=env.NAMESPACE
                       DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
                       KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
               }
@@ -73,37 +73,13 @@ pipeline
                             }
                       }
               }
-              stage('Deploy Service to Kubernetes') 
-              {
-                   environment 
-                  {
-                          //KUBECONFIG = credentials('kubeconfig-credential-id') // Remplacez par l'ID Jenkins du kubeconfig
-                          SERVICE_YAML = 'movie-service-service.yaml' // Nom du fichier contenant la définition du service
-                          NAMESPACE = 'qa' // Namespace cible
-                  } 
-                  steps 
-                  {
-                      script 
-                      {
-                          // Vérifier que le fichier YAML existe dans le dépôt
-                          sh "ls -l ${SERVICE_YAML}"
-                          
-                          // Appliquer le fichier YAML dans le namespace spécifié
-                          //withKubeConfig([credentialsId: 'kubeconfig-credential-id']) 
-                          //{
-                              sh "kubectl apply -f ${SERVICE_YAML} -n ${NAMESPACE}"
-                          //}
-                      }
-              }
-          }
-          stage('Deploy movie-service') 
-          {
+            stage('Deploy movie-service') 
+            {
                   environment
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
-                                KUBECONFIG = credentials('kubeconfig-credential-id') // Jenkins kubeconfig credentials ID
                                 HELM_RELEASE_NAME = 'move-service' // Helm release name
-                                NAMESPACE = 'qa' // Target namespace
+                                NAMESPACE = NAMESPACE // Target namespace
                                 CHART_DIR = './movie-service' // Path to Helm chart directory
                   }
                   steps 
@@ -114,21 +90,20 @@ pipeline
                               rm -Rf .kube
                               mkdir .kube
                               cat $KUBECONFIG > .kube/config
-                              helm upgrade --install ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                              helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
                               --namespace ${NAMESPACE} \
                               --set namespace=${NAMESPACE}
                               """
                      }
                 }
-          }
-        stage('Deploy cast-service') 
+           } // END_stage('Deploy movie-service')
+           stage('Deploy cast-service') 
           {
                   environment
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
-                                KUBECONFIG = credentials('kubeconfig-credential-id') // Jenkins kubeconfig credentials ID
                                 HELM_RELEASE_NAME = 'cast-service' // Helm release name
-                                NAMESPACE = 'qa' // Target namespace
+                                NAMESPACE = NAMESPACE // Target namespace
                                 CHART_DIR = './cast-service' // Path to Helm chart directory
                   }
                   steps 
@@ -139,13 +114,13 @@ pipeline
                               rm -Rf .kube
                               mkdir .kube
                               cat $KUBECONFIG > .kube/config
-                              helm upgrade --install ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                              helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
                               --namespace ${NAMESPACE} \
                               --set namespace=${NAMESPACE}
                               """
                      }
                 }
-          }
+          } // END_stage('Deploy cast-service')
       } // END_stages
     //   post 
     //   { // send email when the job has failed
