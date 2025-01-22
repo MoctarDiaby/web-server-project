@@ -106,12 +106,35 @@ pipeline
                 }
            } // END_stage('Deploy movie-service')
            stage('Deploy cast-service') 
-          {
+           {
                   environment
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
                                 HELM_RELEASE_NAME = 'cast-service' // Helm release name
                                 CHART_DIR = './cast-service' // Path to Helm chart directory
+                  }
+                  steps 
+                  {
+                      script 
+                      {
+                              sh """
+                              rm -Rf .kube
+                              mkdir .kube
+                              cat $KUBECONFIG > .kube/config
+                              helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                              --namespace ${NAMESPACE} \
+                              --set namespace=${NAMESPACE}
+                              """
+                     }
+                }
+          } // END_stage('Deploy cast-service')
+          stage('Deploy nginx') 
+           {
+                  environment
+                  {
+                                HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
+                                HELM_RELEASE_NAME = 'nginx' // Helm release name
+                                CHART_DIR = './nginx' // Path to Helm chart directory
                   }
                   steps 
                   {
@@ -166,4 +189,8 @@ def push_image_docker_hub (image)
                 '''
         }
    }
+}
+def helm_service_deployment()
+{
+      echo "helm_service_deployment"
 }
