@@ -9,3 +9,9 @@ nginx:
     - cast_service
     - movie_service
 
+serviceAccount:
+  create: true
+  name: ""
+  automount: true
+  annotations: {}
+
