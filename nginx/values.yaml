@@ -1,0 +1,11 @@
+nginx:
+  image: nginx:latest
+  ports:
+    containerPort: 8080
+    servicePort: 8080
+  volumes:
+    config: ./nginx_config.conf
+  dependencies:
+    - cast_service
+    - movie_service
+
