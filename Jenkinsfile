@@ -23,17 +23,21 @@ pipeline
               {
                   steps
                   {
-                              // Create an Approval Button with a timeout of 15minutes.
-                              // this require a manuel validation in order to deploy on production environment
-                      // timeout(time: 1, unit: "MINUTES")
-                      // {
-                      //     input message: 'Do you want to deploy in production ?', ok: 'Yes'
-                      // }
-                      if ("${BRANCH}" != "master" && "${NAMESPACE}" == "prod")
-                      {
-                            echo "branch is [${NAMESPACE}] and namespace is [${NAMESPACE}], so we stop deployments !!!!"
-                            return
-                      } //if
+                        step
+                        {
+                              
+                                    // Create an Approval Button with a timeout of 15minutes.
+                                    // this require a manuel validation in order to deploy on production environment
+                            // timeout(time: 1, unit: "MINUTES")
+                            // {
+                            //     input message: 'Do you want to deploy in production ?', ok: 'Yes'
+                            // }
+                            if ("${BRANCH}" != "master" && "${NAMESPACE}" == "prod")
+                            {
+                                  echo "branch is [${NAMESPACE}] and namespace is [${NAMESPACE}], so we stop deployments !!!!"
+                                  return
+                            } //if
+                        }
                   }
               } // END_stage('Deploiement en prod')
               stage('Deploy movie-db')
