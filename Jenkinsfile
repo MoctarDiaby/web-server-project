@@ -5,7 +5,7 @@ pipeline
                       // DOCKER_IMAGE = "datascientestapi"
                       DOCKER_IMAGE = "movie-db"
                       DOCKER_TAG = "v.${BUILD_ID}.0" // we will tag our images with the current build in order to increment the value by 1 with each new build
-                      NAMESPACE=env.NAMESPACE
+                      NAMESPACE="${env.NAMESPACE}"
                       DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
                       KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
               }
@@ -67,7 +67,6 @@ pipeline
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
                                 HELM_RELEASE_NAME = 'move-service' // Helm release name
-                                NAMESPACE = NAMESPACE // Target namespace
                                 CHART_DIR = './movie-service' // Path to Helm chart directory
                   }
                   steps 
@@ -91,7 +90,6 @@ pipeline
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
                                 HELM_RELEASE_NAME = 'cast-service' // Helm release name
-                                NAMESPACE = NAMESPACE // Target namespace
                                 CHART_DIR = './cast-service' // Path to Helm chart directory
                   }
                   steps 
