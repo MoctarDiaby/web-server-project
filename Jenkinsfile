@@ -8,23 +8,40 @@ pipeline
                       NAMESPACE="${env.NAMESPACE}"
                       DOCKER_PASS = credentials("DOCKER_HUB_PASS") // we retrieve  docker password from secret text called docker_hub_pass saved on jenkins
                       KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+                      BRANCH = "${BRANCH}"
               }
       agent any // Jenkins will be able to select all available agents
       stages 
       {
-              
-              //         1 - movie_db
+               //         1 - movie_db
               //         2 - cast_db
               //         3 - movie_service
               //         4 - cast_service
               //         5 - nginx              
               //
+              stage('Deploiement en prod')
+              {
+                  steps
+                  {
+                              // Create an Approval Button with a timeout of 15minutes.
+                              // this require a manuel validation in order to deploy on production environment
+                      // timeout(time: 1, unit: "MINUTES")
+                      // {
+                      //     input message: 'Do you want to deploy in production ?', ok: 'Yes'
+                      // }
+                      if ("${BRANCH}" != "master" && "${NAMESPACE}" == "prod")
+                      {
+                            echo "branch is [${NAMESPACE}] and namespace is [${NAMESPACE}], so we stop deployments !!!!"
+                            return
+                      } //if
+                  }
+              } // END_stage('Deploiement en prod')
               stage('Deploy movie-db')
               { 
                       environment
-                                  {
-                                      DOCKER_IMAGE = "movie_db"
-                                  }
+                      {
+                          DOCKER_IMAGE = "movie_db"
+                      }
                       steps {
                             script 
                             {                // build Deploy movie_db with postgres:12.1-alpine
