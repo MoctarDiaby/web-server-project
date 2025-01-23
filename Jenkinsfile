@@ -150,7 +150,7 @@ pipeline
                               """
                      }
                 }
-          } // END_stage('Deploy cast-service')
+          } // END_stage('Deploy nginx')
       } // END_stages
     //   post 
     //   { // send email when the job has failed
