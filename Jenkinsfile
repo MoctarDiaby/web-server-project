@@ -19,7 +19,7 @@ pipeline
               //         4 - cast_service
               //         5 - nginx              
               //
-              stage('Deploiement en prod')
+              stage('Check if Prod deploiement is accepted')
               {
                   steps
                   {
@@ -140,14 +140,15 @@ pipeline
                   {
                       script 
                       {
-                              sh """
-                              rm -Rf .kube
-                              mkdir .kube
-                              cat $KUBECONFIG > .kube/config
-                              helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
-                              --namespace ${NAMESPACE} \
-                              --set namespace=${NAMESPACE}
-                              """
+                            helm_service_deployment (${HELM_RELEASE_NAME}, ${CHART_DIR})
+                              // sh """
+                              // rm -Rf .kube
+                              // mkdir .kube
+                              // cat $KUBECONFIG > .kube/config
+                              // helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                              // --namespace ${NAMESPACE} \
+                              // --set namespace=${NAMESPACE}
+                              // """
                      }
                 }
           } // END_stage('Deploy nginx')
@@ -190,7 +191,24 @@ def push_image_docker_hub (image)
         }
    }
 }
-def helm_service_deployment()
+def helm_service_deployment(HELM_RELEASE_NAME, CHART_DIR)
 {
-      echo "helm_service_deployment"
+      stage('Deploy: ' + HELM_RELEASE_NAME)
+      {
+        script 
+        {
+            echo "----- Deploying " + HELM_RELEASE_NAME 
+        }
+        script 
+        {
+                  sh """
+                  rm -Rf .kube
+                  mkdir .kube
+                  cat $KUBECONFIG > .kube/config
+                  helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                  --namespace ${NAMESPACE} \
+                  --set namespace=${NAMESPACE}
+                  """
+        }
+   }
 }
