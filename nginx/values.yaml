@@ -4,8 +4,8 @@ nginx:
     containerPort: 8090
     servicePort: 8090
   dependencies:
-    - cast_service
-    - movie_service
+    - cast-service
+    - movie-service
 
 serviceAccount:
   create: true
