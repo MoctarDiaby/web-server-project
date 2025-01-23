@@ -5,7 +5,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  type: ClusterIP
+  type: nodeport
   ports:
     - port: 8090
       targetPort: 8090
