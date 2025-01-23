@@ -25,10 +25,9 @@ spec:
             - name: CAST_SERVICE_HOST_URL
               value: "{{ .Values.env.CAST_SERVICE_HOST_URL }}"
           volumeMounts:
-            - name: movie-service-volume
-              mountPath: /app
+            - name: movie-db-data
+              mountPath: /var/lib/postgresql/data/
       volumes:
-        - name: movie-service-volume
-          hostPath:
-            path: ./cast-service/
-            type: Directory
+      - name: movie-db-data
+        persistentVolumeClaim:
+          claimName: movie-db-pvc
