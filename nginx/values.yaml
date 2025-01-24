@@ -11,7 +11,6 @@ nginx:
   volumeMounts:
   - name: nginx-service-volume
     mountPath: ./nginx_config.conf
-=======
   dependencies:
     - cast-service
     - movie-service
