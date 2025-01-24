@@ -1,33 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: movie-service
   name: movie-db
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
+      app: movie-service
       app: movie-db
   template:
     metadata:
       labels:
+        app: movie-service
         app: movie-db
     spec:
       containers:
+        - name: movie-service
         - name: movie-db
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           command: ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
-          ports:
-            - containerPort: 8000
-          env:
-            - name: DATABASE_URI
-              value: "{{ .Values.env.DATABASE_URI }}"
-            - name: CAST_SERVICE_HOST_URL
-              value: "{{ .Values.env.CAST_SERVICE_HOST_URL }}"
-          volumeMounts:
-            - name: movie-db-data
-              mountPath: /var/lib/postgresql/data/
-      volumes:
-      - name: movie-db-data
-        persistentVolumeClaim:
-          claimName: movie-db-pvc
