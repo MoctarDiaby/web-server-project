@@ -3,6 +3,7 @@ nginx:
   ports:
     containerPort: 8090
     servicePort: 8090
+<<<<<<< HEAD
   volumes:
   - name: nginx-service-volume
     hostPath:
@@ -11,9 +12,11 @@ nginx:
   volumeMounts:
   - name: nginx-service-volume
     mountPath: ./nginx_config.conf
+=======
+>>>>>>> 99d8f5707fbb562c3b4d748ea3c827b19f73b2af
   dependencies:
-    - cast_service
-    - movie_service
+    - cast-service
+    - movie-service
 
 serviceAccount:
   create: true

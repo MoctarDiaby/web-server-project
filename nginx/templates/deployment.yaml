@@ -16,7 +16,19 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: {{ .Values.nginx.image }}
+          image: nginx:latest
           ports:
+<<<<<<< HEAD
             - containerPort: {{ .Values.nginx.ports.containerPort }}
 
+=======
+            - containerPort: 8090
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config
+>>>>>>> 99d8f5707fbb562c3b4d748ea3c827b19f73b2af
