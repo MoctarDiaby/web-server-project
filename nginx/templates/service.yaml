@@ -5,9 +5,12 @@ metadata:
   labels:
     app: nginx
 spec:
-  app: nginx
+  type: NodePort
+  selector:
+     app: nginx
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
-      targetPort: 8090
-      
+      targetPort: 80
+      nodePort: 8090
