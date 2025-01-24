@@ -12,5 +12,5 @@ spec:
     - name: http
       protocol: TCP
       port: 8090
-      nodePort: 30090
+      targetPort: 8090
     type: ClusterIP
