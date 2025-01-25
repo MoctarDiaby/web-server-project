@@ -2,22 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cast-service
-  name: cast-db
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: cast-service
-      app: cast-db
   template:
     metadata:
       labels:
         app: cast-service
-        app: cast-db
     spec:
       containers:
         - name: cast-service
-        - name: cast-db
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           command: ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
