@@ -7,6 +7,10 @@ data:
     server
     {
               listen 8090;
+              location / 
+              {
+                  return 301 /api/v1/movies;
+              }
               location /api/v1/movies
               {
                     proxy_pass http://movie-service:8000/api/v1/movies;
