@@ -31,16 +31,3 @@ spec:
         - name: postgres-data-cast
           persistentVolumeClaim:
             claimName: postgres-data-cast-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-data-cast-pvc
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
