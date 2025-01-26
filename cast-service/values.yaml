@@ -11,7 +11,7 @@ service:
   targetPort: 8000
 
 env:
-  DATABASE_URI: postgresql://cast_db_username:cast_db_password@cast-service/cast_db_dev
+  DATABASE_URI: postgresql://cast_db_username:cast_db_password@cast-db/cast_db_dev
 
 volumes:
   - name: cast-service-volume
