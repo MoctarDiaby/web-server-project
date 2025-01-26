@@ -31,28 +31,3 @@ spec:
         - name: postgres-data-movie
           persistentVolumeClaim:
             claimName: postgres-data-movie-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-data-movie-pvc
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: movie-db
-  namespace: default
-spec:
-  selector:
-    app: movie-db
-  ports:
-    - protocol: TCP
-      port: 5432
-  type: ClusterIP
