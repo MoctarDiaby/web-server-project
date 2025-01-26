@@ -87,7 +87,7 @@ pipeline
                   environment
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
-                                HELM_RELEASE_NAME = 'move-service' // Helm release name
+                                HELM_RELEASE_NAME = 'move-db' // Helm release name
                                 CHART_DIR = './movie-service' // Path to Helm chart directory
                   }
                   steps 
@@ -110,7 +110,7 @@ pipeline
                   environment
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
-                                HELM_RELEASE_NAME = 'cast-service' // Helm release name
+                                HELM_RELEASE_NAME = 'cast-db' // Helm release name
                                 CHART_DIR = './cast-service' // Path to Helm chart directory
                   }
                   steps 
