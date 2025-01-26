@@ -44,15 +44,3 @@ spec:
     requests:
       storage: 1Gi
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: cast-db
-  namespace: default
-spec:
-  selector:
-    app: cast-db
-  ports:
-    - protocol: TCP
-      port: 5432
-  type: ClusterIP
