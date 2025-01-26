@@ -8,14 +8,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: movie_db
+      app: movie-db
   template:
     metadata:
       labels:
-        app: movie_db
+        app: movie-db
     spec:
       containers:
-        - name: movie_db
+        - name: movie-db
           image: postgres:12.1-alpine
           env:
             - name: POSTGRES_USER
@@ -47,11 +47,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: movie_db
+  name: movie-db
   namespace: default
 spec:
   selector:
-    app: movie_db
+    app: movie-db
   ports:
     - protocol: TCP
       port: 5432
