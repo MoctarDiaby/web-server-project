@@ -30,5 +30,5 @@ spec:
       volumes:
         - name: cast-service-volume
           hostPath:
-            path: ./cast-service
+            path: /home/ubuntu/EXAM_JENKINS/Jenkins_devops_exams/cast-service
             type: Directory
