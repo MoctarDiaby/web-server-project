@@ -6,7 +6,7 @@ spec:
   ports:
   - protocol: TCP
     port: 8002
-    targetPort: {{ .Values.Service.targetPort }}
+    targetPort: {{ .values.service.targetPort }}
   selector:
     app: cast-service
 ---    
