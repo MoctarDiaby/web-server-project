@@ -7,7 +7,7 @@ spec:
   ports:
   - protocol: TCP
     port: 8001
-    targetPort: {{ .Values.movieService.port }}
+    targetPort: {{ .Values.Service.targetPort }}
   selector:
     app: movie-service
 ---
