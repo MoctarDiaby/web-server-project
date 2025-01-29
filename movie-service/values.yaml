@@ -12,7 +12,7 @@ service:
 
 env:
   DATABASE_URI: postgresql://movie_db_username:movie_db_password@movie-db/movie_db_dev
-  CAST_SERVICE_HOST_URL: http://cast_service:8002/api/v1/casts/
+  CAST_SERVICE_HOST_URL: http://cast-service:8002/api/v1/casts/
 
 volumes:
   - name: movie-service-volume
