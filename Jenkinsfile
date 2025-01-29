@@ -90,14 +90,14 @@ pipeline
                   environment
                   {
                                 HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
-                                HELM_RELEASE_NAME = 'move-db' // Helm release name
+                                HELM_RELEASE_NAME = 'movie-db' // Helm release name
                                 CHART_DIR = './movie-service' // Path to Helm chart directory
                   }
                   steps 
                   {
                      script 
                      {
-                               helm_service_deployment ("cast-db", "./cast-service")
+                               helm_service_deployment ("movie-db", "./movie-service")
                      }
                      script 
                      {
