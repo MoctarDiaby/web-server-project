@@ -143,7 +143,7 @@ pipeline
                   {
                       script 
                       {
-                            helm_service_deployment (${HELM_RELEASE_NAME}, ${CHART_DIR})
+                            helm_service_deployment ("${HELM_RELEASE_NAME}", "${CHART_DIR}")
                               // sh """
                               // rm -Rf .kube
                               // mkdir .kube
