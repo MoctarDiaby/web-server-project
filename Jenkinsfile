@@ -18,7 +18,10 @@ pipeline
               //         3 - movie_service
               //         4 - cast_service
               //         5 - nginx              
-              //
+              //         6 - fasapiapp
+              //         8 - test connections (movies & casts)
+             //          9 - create movies and check creations
+            //          10 - create casts and check creation
               stage('Check if Prod deploiement is accepted')
               {
                   steps
@@ -140,15 +143,15 @@ pipeline
                   {
                       script 
                       {
-                            //helm_service_deployment (${HELM_RELEASE_NAME}, ${CHART_DIR})
-                              sh """
-                              rm -Rf .kube
-                              mkdir .kube
-                              cat $KUBECONFIG > .kube/config
-                              helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
-                              --namespace ${NAMESPACE} \
-                              --set namespace=${NAMESPACE}
-                              """
+                            helm_service_deployment (${HELM_RELEASE_NAME}, ${CHART_DIR})
+                              // sh """
+                              // rm -Rf .kube
+                              // mkdir .kube
+                              // cat $KUBECONFIG > .kube/config
+                              // helm upgrade -i ${HELM_RELEASE_NAME} ${CHART_DIR} \
+                              // --namespace ${NAMESPACE} \
+                              // --set namespace=${NAMESPACE}
+                              // """
                      }
                 }
           } // END_stage('Deploy nginx')
