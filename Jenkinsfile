@@ -128,6 +128,10 @@ pipeline
                  
                   steps ("Tests connections")
                   {
+                         script 
+                        {
+                              sleep 120   // wait 2 minutes that all services are up
+                        }
                         script
                         {
                                
