@@ -97,6 +97,10 @@ pipeline
                   {
                      script 
                      {
+                         sleep 120   // wait 2 minutes that DB are up
+                     }
+                     script 
+                     {
                                helm_service_deployment ("movie-db", "./movie-service")
                      }
                      script 
@@ -113,38 +117,47 @@ pipeline
                      }
                 }
            } // END_stage('Deploy movie-service')
-          //  stage('Deploy cast-service') 
-          //  {
-          //         environment
-          //         {
-          //                       HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
-          //                       HELM_RELEASE_NAME = 'cast-db' // Helm release name
-          //                       CHART_DIR = './cast-service' // Path to Helm chart directory
-          //         }
-          //         steps 
-          //         {
-          //             script 
-          //             {
-          //                      helm_service_deployment ("${HELM_RELEASE_NAME}", "${CHART_DIR}")
-          //            }
-          //       }
-          // } // END_stage('Deploy cast-service')
-          // stage('Deploy nginx') 
-          //  {
-          //         environment
-          //         {
-          //                       HELM_HOME = '/usr/local/bin/helm' // Path to the Helm binary
-          //                       HELM_RELEASE_NAME = 'nginx' // Helm release name
-          //                       CHART_DIR = './nginx' // Path to Helm chart directory
-          //         }
-          //         steps 
-          //         {
-          //             script 
-          //             {
-          //                   helm_service_deployment ("${HELM_RELEASE_NAME}", "${CHART_DIR}")
-          //            }
-          //       }
-          // } // END_stage('Deploy nginx')
+           stage ('Tests')
+           {
+                 environment
+                  {
+                         movie_data = '{"name":"Starsky & Hutch","plot":"string","genres":["Policy"],"casts_id":[1],"id":2}'
+                         cast_data = '{"name": "Todd Phillips","nationality": "American","id": 1}'
+                         
+                  }
+                 
+                  steps ("Tests connections")
+                  {
+                        script
+                        {
+                               
+                             my_curl_command = """ curl -X 'POST' 'http://localhost:8090/api/v1/movies/' -H 'accept: application/json' \
+                                                  -H 'Content-Type: application/json' \
+                                                  -d '{
+                                                  "name": "Starsky & Hutch",
+                                                  "plot": "string",
+                                                  "genres": [ "Policy"],
+                                                  "casts_id": [1]
+                                                }' """
+                              curl_command_result = curl_command( "create movies", my_curl_command)
+                              println "curl_command_result is: \n" + curl_command_result
+                        }
+                        script
+                        {
+                              my_curl_command = """curl -X 'POST' \
+                                                  'http://localhost:8090/api/v1/casts/' \
+                                                  -H 'accept: application/json' \
+                                                  -H 'Content-Type: application/json' \
+                                                  -d '{
+                                                  "name": "Todd Phillips",
+                                                  "nationality": "American"
+                                                }'"""
+                              curl_command_result = curl_command( "create casts", my_curl_command)
+                              println "curl_command_result is: \n" + curl_command_result
+                        }
+                  }
+            }
+          
       } // END_stages
     //   post 
     //   { // send email when the job has failed
@@ -204,4 +217,17 @@ def helm_service_deployment(HELM_RELEASE_NAME, CHART_DIR)
                   """
         }
    }
+}
+def curl_command(title, command)
+{
+      stage ("curl command: " + title)
+      {
+            script
+            {
+                 curl_result = sh ( script: command, returnStdout:true)
+                 return curl_result
+            }
+      //  sh """curl -u username:password -X POST -d '{"body":"Jenkinspipleinecomment"}' -H "Content-Type:application/json" http://localhost:8080/rest/api/2/issue/someissue/comment"""
+      }
+
 }
