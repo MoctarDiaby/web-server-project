@@ -2,8 +2,14 @@
 # python-microservice-fastapi
 Learn to build your own microservice using Python and FastAPI
 
-## How to run??
+## How to run in Docker env??
  - Make sure you have installed `docker` and `docker-compose`
  - Run `docker-compose up -d`
  - Head over to http://localhost:8080/api/v1/movies/docs for movie service docs 
    and http://localhost:8080/api/v1/casts/docs for cast service docs
+
+
+## How to run in Kubernetes env??
+ - use jenkins to deploy (see jenkinsfile)
+ - Head over to http://localhost:8090/api/v1/movies/docs for movie service docs 
+   and http://localhost:8090/api/v1/casts/docs for cast service docs
