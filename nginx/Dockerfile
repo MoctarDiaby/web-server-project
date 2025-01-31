@@ -1,5 +1,5 @@
 # Pull base image
-FROM debian:latest
+FROM ubuntu:18.04
 
 # Dockerfile Maintainer
 MAINTAINER Jan Wagner "waja@cyconet.org"
