@@ -1,10 +1,15 @@
-# Base Image 
-FROM nginx:last
-# MAINTAINER of the Dockerfile
-MAINTAINER Abdelkader BOUMEDIENE <abdelkader.boumediene@gmail.com>
-#Copy the index.html file /usr/share/nginx/html/
-COPY index.html /usr/share/nginx/html/
-#Expose Nginx Port
+# Pull base image
+FROM debian:latest
+
+# Dockerfile Maintainer
+MAINTAINER Jan Wagner "waja@cyconet.org"
+
+# Install nginx and adjust nginx config to stay in foreground
+RUN apt-get update && apt-get install --no-install-recommends -y nginx; \
+ echo "daemon off;" >> /etc/nginx/nginx.conf
+
+# Expose HTTP
 EXPOSE 80
-#Start NginxService 
-CMD ["nginx", "-g", "daemon off;"]
+
+# Start nginx
+CMD ["/usr/sbin/nginx"]
