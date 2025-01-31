@@ -1,7 +1,7 @@
 # Base Image 
-FROM nginx:alpine
+FROM nginx:last
 # MAINTAINER of the Dockerfile
-MAINTAINER Bikram <bikramatmedium@gmail.com>
+MAINTAINER Abdelkader BOUMEDIENE <abdelkader.boumediene@gmail.com>
 #Copy the index.html file /usr/share/nginx/html/
 COPY index.html /usr/share/nginx/html/
 #Expose Nginx Port
