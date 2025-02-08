@@ -37,7 +37,7 @@ services:
     depends_on:
       - wordpress
     ports:
-      - "80:80"
+      - "90:80"  # Mappe le port 80 de l'hôte vers le port 80 du conteneur
     volumes:
       - wordpress_data:/var/www/html
     networks:
