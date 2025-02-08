@@ -11,7 +11,7 @@ RUN rm -rf wp-content && \
     rm latest.tar.gz
 
 # Copier le fichier wp-config.php depuis l'hôte vers le conteneur
-COPY ./wordpress/wp-config.php /var/www/html/wp-config.php
+COPY ./wp-config.php /var/www/html/wp-config.php
 
 # Donner les bons droits aux fichiers
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
