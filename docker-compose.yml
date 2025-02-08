@@ -15,6 +15,8 @@ services:
        - ./wordpress/wp-config.php:/var/www/html/wp-config.php
     networks:
       - wp_network
+    ports:
+      - "9000:80"  # Mappe le port 9000 de l'hôte vers le port 80 du conteneur
 
   db:
     build: ./mysql
