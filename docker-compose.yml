@@ -37,7 +37,7 @@ services:
     depends_on:
       - wordpress
     ports:
-      - "90:90"
+      - "80:80"
     volumes:
       - wordpress_data:/var/www/html
     networks:
