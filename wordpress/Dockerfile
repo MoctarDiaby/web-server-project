@@ -1,7 +1,7 @@
 FROM wordpress:latest
 
 # Copie le fichier de configuration personnalisé
-COPY wp-config.php /var/www/html/wp-config.php
+RUN cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 
 # Change les permissions
 RUN chown -R www-data:www-data /var/www/html/wp-config.php
