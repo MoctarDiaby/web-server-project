@@ -15,7 +15,7 @@ services:
       - wordpress_data:/var/www/html
     networks:
       - wordpress_net
-  php:
+  wordpress:
     container_name: php
     build: ./wordpress
     ports:
