@@ -1,16 +1,22 @@
-# Utiliser l'image officielle de WordPress
-FROM wordpress:latest
+# Utilisation de l'image officielle PHP avec FPM
+FROM php:8.2-fpm
 
-# Installer les dépendances nécessaires pour PHP 8.2 et PHP-FPM
+# Installer les extensions PHP nécessaires
 RUN apt-get update && apt-get install -y \
-    lsb-release \
-    ca-certificates \
-    curl \
-    apt-transport-https \
-    software-properties-common \
-    && add-apt-repository ppa:ondrej/php \
-    && apt-get update \
-    && apt-get install -y php8.2-fpm
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql
 
-# Exposer le port 9000 pour que Nginx puisse se connecter
+# Définir le répertoire de travail
+WORKDIR /var/www/html
+
+# Copier les fichiers WordPress (si besoin)
+COPY . /var/www/html/
+
+# Donner les permissions correctes
+RUN chown -R www-data:www-data /var/www/html
+
+# Exposer le port PHP-FPM
 EXPOSE 9000
