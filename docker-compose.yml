@@ -15,7 +15,7 @@ services:
       - wordpress_data:/var/www/html
     networks:
       - wordpress_net
-  Service pour Nginx
+  # # Service pour Nginx
   # nginx:
   #   build:
   #     context: ./nginx
