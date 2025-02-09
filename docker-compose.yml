@@ -16,9 +16,10 @@ services:
     networks:
       - wordpress_net
   php:
-    container_name: php
-    context: ./php
-    dockerfile: Dockerfile
+    build:
+      container_name: php
+      context: ./php
+      dockerfile: Dockerfile
     ports:
       - "9000"
     volumes:
