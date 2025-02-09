@@ -14,7 +14,7 @@ services:
       - ./src:/var/www/html
   php:
     container_name: php
-    build: .r/wordpress
+    build: ./wordpress
     ports:
       - "9000:9000"
     volumes:
