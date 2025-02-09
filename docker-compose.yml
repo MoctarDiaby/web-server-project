@@ -39,6 +39,8 @@ services:
     volumes:
       - ./src:/var/www/html
     working_dir: /var/www/html
+    networks:
+      - wordpress_net    
  
  # Service pour WordPress
   wordpress:
