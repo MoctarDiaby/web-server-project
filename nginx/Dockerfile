@@ -1,7 +1,7 @@
 # Utiliser une image Ubuntu de base
 FROM ubuntu:22.04
 
-# Mettre à jour les dépôts et installer les outils nécessaires
+# Installer les dépendances nécessaires
 RUN apt-get update && apt-get install -y \
     lsb-release \
     ca-certificates \
@@ -9,13 +9,15 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https \
     software-properties-common
 
-# Ajouter le dépôt de Ondřej Surý pour PHP
-RUN curl -fsSL https://packages.sury.org/php/README.txt | bash -x
+# Ajouter le dépôt de Sury pour PHP
+RUN curl -fsSL https://packages.sury.org/php/README.txt | bash -x && \
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list && \
+    curl -fsSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/sury-keyring.gpg >/dev/null
 
-# Mettre à jour les paquets
+# Mettre à jour les paquets après l'ajout du dépôt
 RUN apt-get update
 
-# Installer Nginx et PHP 8.2
+# Installer Nginx et PHP 8.2 avec les extensions nécessaires
 RUN apt-get install -y \
     nginx \
     php8.2-fpm \
