@@ -1,33 +1,33 @@
 # docker-compose.yml
 version: "3.8"
 services:
-  # nginx:
-  #   container_name: nginx
-  #   build: ./nginx
-  #   command: nginx -g "daemon off;"
-  #   links:
-  #     - wordpress
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./logs/nginx:/var/log/nginx
-  #     - ./src:/var/www/html
-  #     - wordpress_data:/var/www/html
-  #   networks:
-  #     - wordpress_net
-  # Service pour Nginx
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    command: nginx -g "daemon off;"
     container_name: nginx
-    volumes:
-      - wordpress_data:/var/www/html  # Utiliser le volume partagé
+    build: ./nginx
+    command: nginx -g "daemon off;"
+    links:
+      - wordpress
     ports:
-      - "80:80" # Nginx écoute sur le port 80
+      - "80:80"
+    volumes:
+      - ./logs/nginx:/var/log/nginx
+      - ./src:/var/www/html
+      - wordpress_data:/var/www/html
     networks:
       - wordpress_net
+  Service pour Nginx
+  # nginx:
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile
+  #   command: nginx -g "daemon off;"
+  #   container_name: nginx
+  #   volumes:
+  #     - wordpress_data:/var/www/html  # Utiliser le volume partagé
+  #   ports:
+  #     - "90:80" # Nginx écoute sur le port 80
+  #   networks:
+  #     - wordpress_net
 
   php:
     build:
