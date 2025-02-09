@@ -1,8 +1,8 @@
 # Utiliser l'image officielle de WordPress
 FROM wordpress:latest
 
-# Ajouter des extensions ou personnaliser si besoin
-# Exemple : COPY ./wp-content /var/www/html/wp-content/
+# Installer PHP-FPM
+RUN apt-get update && apt-get install -y php-fpm
 
-# Exposer le port 80 pour que WordPress soit accessible
-EXPOSE 80
+# Exposer le port 80 pour que Nginx puisse l'utiliser
+EXPOSE 9000
