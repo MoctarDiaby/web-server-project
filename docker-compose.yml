@@ -74,9 +74,9 @@ services:
 #     networks:
 #       - wordpress_net
 
-# networks:
-#   wordpress_net:
-#     driver: bridge
+networks:
+  wordpress_net:
+    driver: bridge
 
 # volumes:
 #   db_data:
