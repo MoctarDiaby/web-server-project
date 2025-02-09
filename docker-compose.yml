@@ -16,7 +16,7 @@ services:
     networks:
       - wordpress_net
   wordpress:
-    container_name: php
+    container_name: wordpress
     build: ./wordpress
     ports:
       - "9000:9000"
