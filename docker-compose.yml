@@ -44,7 +44,7 @@ services:
       dockerfile: Dockerfile
     container_name: nginx
     volumes:
-      - wordpress_data:/var/www/html
+      - wordpress_data:/var/www/html  # Utiliser le volume partagé
     ports:
       - "80:80" # Nginx écoute sur le port 80
     networks:
@@ -56,4 +56,4 @@ networks:
 
 volumes:
   db_data:
-  wordpress_data:
+  wordpress_data:  # Volume partagé entre WordPress et Nginx
