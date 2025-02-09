@@ -15,3 +15,5 @@
 
 # docker/nginx/Dockerfile
 FROM nginx:last
+
+ADD default.conf /etc/nginx/conf.d/default.conf
