@@ -6,7 +6,7 @@ services:
     build: ./nginx
     command: nginx -g "daemon off;"
     links:
-      - php
+      - wordpress
     ports:
       - "80:80"
     volumes:
