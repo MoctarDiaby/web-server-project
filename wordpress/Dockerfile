@@ -24,4 +24,4 @@
 
 
 # docker/php/Dockerfile
-FROM wordpress:last
+FROM wordpress
