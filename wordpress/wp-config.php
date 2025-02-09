@@ -18,6 +18,10 @@ define('SECURE_AUTH_SALT', 'your-random-key');
 define('LOGGED_IN_SALT',   'your-random-key');
 define('NONCE_SALT',       'your-random-key');
 
+define('WP_HOME', 'http://localhost:8080');
+define('WP_SITEURL', 'http://localhost:8080');
+
+
 $table_prefix = 'wp_';
 
 define('WP_DEBUG', false);
