@@ -5,7 +5,7 @@ FROM nginx:latest
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copier les fichiers WordPress depuis le volume partagé
-COPY ../wordpress /var/www/html
+COPY ./wordpress /var/www/html
 
 # Exposer le port 80 pour que le service Nginx soit accessible
 EXPOSE 80
