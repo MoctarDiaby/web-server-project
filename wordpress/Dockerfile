@@ -2,12 +2,11 @@ FROM wordpress:latest
 
 # Installe des extensions PHP nécessaires pour WordPress
 # RUN apt-get update && apt-get install -y \
-#     libpng-dev \
-#     libjpeg-dev \
-#     libfreetype6-dev \
-#     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-#     && docker-php-ext-install gd mysqli pdo pdo_mysql
-RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql
     php8.2-fpm \
     php8.2-mysql \
     php8.2-cli \
