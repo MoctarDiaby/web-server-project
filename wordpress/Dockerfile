@@ -1,22 +1,16 @@
-FROM php:8.2-fpm
+FROM wordpress:latest
 
-# Installer les dépendances et les extensions PHP nécessaires
+# Installation des dépendances PHP
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql \
+    php8.2-fpm \
+    php8.2-mysql \
+    php8.2-cli \
+    php8.2-gd \
+    php8.2-mbstring \
+    php8.2-xml \
+    php8.2-curl \
+    php8.2-zip \
     && apt-get clean
 
-# Copier les fichiers WordPress dans le conteneur
-COPY . /var/www/html
-
-# Changer les permissions
-RUN chown -R www-data:www-data /var/www/html
-
-# Exposer le port 9000 pour PHP-FPM
-EXPOSE 9000
-
-# Lancer PHP-FPM
-CMD ["php-fpm"]
+# Définition de la commande d'entrée pour démarrer PHP-FPM
+CMD ["php-fpm8.2", "-F"]
