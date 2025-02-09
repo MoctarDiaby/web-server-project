@@ -38,6 +38,7 @@ services:
       - "8000"
     volumes:
       - ./src:/var/www/html
+      - wordpress_data:/var/www/html
     working_dir: /var/www/html
     networks:
       - wordpress_net    
