@@ -1,24 +1,22 @@
-FROM wordpress:latest
+FROM php:8.2-fpm
 
-# Ajouter le dépôt de Sury pour PHP 8.2
+# Installer les dépendances et les extensions PHP nécessaires
 RUN apt-get update && apt-get install -y \
-    lsb-release \
-    ca-certificates \
-    curl \
-    apt-transport-https \
-    software-properties-common \
-    && curl -fsSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/php.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list \
-    && apt-get update
-
-# Installer PHP 8.2 et les extensions nécessaires
-RUN apt-get install -y \
-    php8.2-fpm \
-    php8.2-mysql \
-    php8.2-cli \
-    php8.2-gd \
-    php8.2-mbstring \
-    php8.2-xml \
-    php8.2-curl \
-    php8.2-zip \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql \
     && apt-get clean
+
+# Copier les fichiers WordPress dans le conteneur
+COPY . /var/www/html
+
+# Changer les permissions
+RUN chown -R www-data:www-data /var/www/html
+
+# Exposer le port 9000 pour PHP-FPM
+EXPOSE 9000
+
+# Lancer PHP-FPM
+CMD ["php-fpm"]
