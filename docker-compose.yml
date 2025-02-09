@@ -22,12 +22,29 @@ services:
   #   volumes:
   #     - ./src:/var/www/html
   #   working_dir: /var/www/html
+ 
+ # Service pour WordPress
+  wordpress:
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
+    container_name: wordpress
+    environment:
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress_user
+      WORDPRESS_DB_PASSWORD: wordpress_password
+    volumes:
+      - wordpress_data:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - db
+    networks:
+      - wordpress_net
+    ports:
+      - "9000:9000" # WordPress accessible sur le port 9000
 
-
-# version: '3.8'
-
-# services:
-#   # Service pour la base de données MariaDB
+ # Service pour la base de données MariaDB
   db:
     build:
       context: ./mariadb
@@ -42,27 +59,7 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - wordpress_net
-
-  # Service pour WordPress
-  wordpress:
-    build:
-      context: ./wordpress
-      dockerfile: Dockerfile
-    container_name: wordpress
-    environment:
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress_user
-      WORDPRESS_DB_PASSWORD: wordpress_password
-    volumes:
-      - wordpress_data:/var/www/html
-    depends_on:
-      - db
-    networks:
-      - wordpress_net
-    ports:
-      - "9000:9000" # WordPress accessible sur le port 9000
-
+      
 #   # Service pour Nginx
 #   nginx:
 #     build:
