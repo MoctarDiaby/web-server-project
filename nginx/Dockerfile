@@ -14,6 +14,6 @@
 # CMD ["nginx", "-g", "daemon off;"]
 
 # docker/nginx/Dockerfile
-FROM nginx:last
+FROM nginx
 
 ADD default.conf /etc/nginx/conf.d/default.conf
