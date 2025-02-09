@@ -26,20 +26,20 @@ services:
 
 # services:
 #   # Service pour la base de données MariaDB
-#   db:
-#     build:
-#       context: ./mariadb
-#       dockerfile: Dockerfile
-#     container_name: mariadb
-#     environment:
-#       MYSQL_ROOT_PASSWORD: example_root_password
-#       MYSQL_DATABASE: wordpress
-#       MYSQL_USER: wordpress_user
-#       MYSQL_PASSWORD: wordpress_password
-#     volumes:
-#       - db_data:/var/lib/mysql
-#     networks:
-#       - wordpress_net
+  db:
+    build:
+      context: ./mariadb
+      dockerfile: Dockerfile
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: example_root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress_user
+      MYSQL_PASSWORD: wordpress_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress_net
 
 #   # Service pour WordPress
 #   wordpress:
