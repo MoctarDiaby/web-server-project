@@ -25,7 +25,7 @@ services:
     volumes:
       - wordpress_data:/var/www/html  # Utiliser le volume partagé
     ports:
-      - "8080:80" # Nginx écoute sur le port 80
+      - "80:80" # Nginx écoute sur le port 80
     networks:
       - wordpress_net
 
