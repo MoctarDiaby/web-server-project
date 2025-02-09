@@ -18,15 +18,27 @@
 
 # EXPOSE 9000
 # CMD ["php-fpm"]
+# -----------------------------------------------------------------------------------
+# FROM wordpress:latest
 
+# # Copie le fichier de configuration personnalisé
+# COPY wp-config.php /var/www/html/wp-config.php
+
+# # Change les permissions
+# RUN chown -R www-data:www-data /var/www/html/wp-config.php
+
+# # Expose le port 80
+# EXPOSE 80
+# -----------------------------------------------------------------------------------
 FROM wordpress:latest
 
-# Copie le fichier de configuration personnalisé
-COPY wp-config.php /var/www/html/wp-config.php
+# Installation des extensions PHP nécessaires
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Change les permissions
-RUN chown -R www-data:www-data /var/www/html/wp-config.php
+# Activation du module rewrite pour Apache
+RUN a2enmod rewrite
 
-# Expose le port 80
-EXPOSE 80
+# Redémarrage d'Apache (pas obligatoire ici car l'image WordPress l'exécute automatiquement)
+CMD ["apache2-foreground"]
+
 
