@@ -1,23 +1,22 @@
-# Utiliser une image Ubuntu de base
+# Utiliser une image de base Ubuntu
 FROM ubuntu:22.04
 
-# Installer les dépendances nécessaires
+# Mettre à jour les paquets et installer les dépendances
 RUN apt-get update && apt-get install -y \
     lsb-release \
     ca-certificates \
     curl \
     apt-transport-https \
-    software-properties-common
+    software-properties-common 
 
-# Ajouter le dépôt de Sury pour PHP
-RUN curl -fsSL https://packages.sury.org/php/README.txt | bash -x && \
-    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list && \
-    curl -fsSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/sury-keyring.gpg >/dev/null
+# Ajouter le dépôt officiel de PHP (SURY) sans `add-apt-repository`
+RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list && \
+    curl -fsSL https://packages.sury.org/php/apt.gpg | tee /etc/apt/trusted.gpg.d/sury-keyring.gpg > /dev/null
 
-# Mettre à jour les paquets après l'ajout du dépôt
+# Mettre à jour la liste des paquets
 RUN apt-get update
 
-# Installer Nginx et PHP 8.2 avec les extensions nécessaires
+# Installer PHP-FPM 8.2 et ses extensions nécessaires
 RUN apt-get install -y \
     nginx \
     php8.2-fpm \
@@ -32,8 +31,8 @@ RUN apt-get install -y \
 # Copier le fichier de configuration Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Exposer le port 80 pour Nginx
+# Exposer le port 80
 EXPOSE 80
 
-# Lancer Nginx et PHP-FPM dans le même conteneur
+# Lancer PHP-FPM et Nginx ensemble
 CMD service php8.2-fpm start && nginx -g 'daemon off;'
