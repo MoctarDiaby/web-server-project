@@ -1,7 +1,7 @@
-# Utiliser une image de base avec PHP et FPM
-FROM php:8.2-fpm
+# Utiliser l'image officielle de WordPress avec PHP-FPM
+FROM wordpress:latest
 
-# Installer les extensions PHP nécessaires
+# Si nécessaire, installe des extensions supplémentaires
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -9,17 +9,5 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd mysqli pdo pdo_mysql
 
-# Télécharger et installer WordPress
-RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-    && chmod +x /usr/local/bin/wp
-
-# Définir le répertoire de travail
-WORKDIR /var/www/html
-
-# Copier les fichiers de WordPress si nécessaire
-# COPY ./wp-content /var/www/html/wp-content/
-
-# Exposer le port utilisé par PHP-FPM
-EXPOSE 9000
-
-CMD ["php-fpm"]
+# Exposer le port 80 pour Nginx
+EXPOSE 80
