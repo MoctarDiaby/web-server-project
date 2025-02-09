@@ -1,51 +1,55 @@
 version: '3.8'
 
 services:
-  wordpress:
-    build: ./wordpress
-    restart: always
-    depends_on:
-      - db
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: user
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: wordpress
-    volumes:
-       - ./wordpress/wp-config.php:/var/www/html/wp-config.php
-    networks:
-      - wp_network
-    ports:
-      - "9000:80"  # Mappe le port 9000 de l'hôte vers le port 80 du conteneur
-
+  # Service de la base de données MariaDB
   db:
-    build: ./mysql
-    restart: always
+    image: mariadb:latest
+    container_name: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: example_root_password
       MYSQL_DATABASE: wordpress
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: wordpress_user
+      MYSQL_PASSWORD: wordpress_password
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - wp_network
+      - wordpress_net
 
-  nginx:
-    build: ./nginx
-    restart: always
-    depends_on:
-      - wordpress
-    ports:
-      - "90:80"  # Mappe le port 80 de l'hôte vers le port 80 du conteneur
+  # Service pour WordPress
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    environment:
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress_user
+      WORDPRESS_DB_PASSWORD: wordpress_password
     volumes:
       - wordpress_data:/var/www/html
+    depends_on:
+      - db
     networks:
-      - wp_network
+      - wordpress_net
+    ports:
+      - "80:80" # Nginx écoutera sur le port 80 de l'instance
+    restart: always
 
-volumes:
-  wordpress_data:
-  db_data:
+  # Service pour Nginx (serveur web)
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - wordpress_data:/var/www/html
+    ports:
+      - "9000:80"  # Nginx est mappé sur le port 9000
+    networks:
+      - wordpress_net
 
 networks:
-  wp_network:
+  wordpress_net:
+    driver: bridge
+
+volumes:
+  db_data:
+  wordpress_data:
