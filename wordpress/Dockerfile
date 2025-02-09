@@ -8,5 +8,5 @@ RUN apt-get update && apt-get install -y \
     php8.2-mbstring \
     php8.2-xml \
     php8.2-curl \
-    php8.2-zip \
+    php-zip \
     && apt-get clean
