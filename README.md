@@ -29,5 +29,5 @@ Déployer la solution en production
 docker-compose up -d
 
 # Première étape: déploiement via helm
-helm install web-server-project
+helm install ./web-server-project --name web-server-project
 
