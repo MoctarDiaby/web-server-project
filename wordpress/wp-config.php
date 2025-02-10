@@ -1,5 +1,5 @@
 // wordpress/wp-config.php
-define('DB_NAME', 'wordpress');
+define('DB_NAME', 'wordpressdb');
 define('DB_USER', 'wordpress_user');
 define('DB_PASSWORD', 'wordpress_password');
 define('DB_HOST', 'mariadb'); // "db" est le nom du service MySQL dans docker-compose.yml
