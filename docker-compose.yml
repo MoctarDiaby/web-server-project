@@ -59,12 +59,12 @@ services:
       - ./src:/var/www/html
     working_dir: /var/www/html
     depends_on:
-      - db
+      - mariadb
     networks:
       - wordpress_net
 
  # Service pour la base de données MariaDB
-  db:
+  mariadb:
     build:
       context: ./mariadb
       dockerfile: Dockerfile
