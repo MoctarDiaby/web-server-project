@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: wordpress
     environment:
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_NAME: wordpressdb
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress_user
       WORDPRESS_DB_PASSWORD: wordpress_password
@@ -40,7 +40,7 @@ services:
     container_name: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: example_root_password
-      MYSQL_DATABASE: wordpress
+      MYSQL_DATABASE: wordpressdb
       MYSQL_USER: wordpress_user
       MYSQL_PASSWORD: wordpress_password
     volumes:
