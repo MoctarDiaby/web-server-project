@@ -1,5 +1,5 @@
 apiVersion: v2
-name: wordpress-app
+name: web-server-project
 description: A Helm chart for WordPress with Nginx and MariaDB
 version: 0.1.0
 dependencies:
