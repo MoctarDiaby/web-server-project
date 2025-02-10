@@ -10,7 +10,7 @@ ADD www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN mkdir -p /var/www/html
 
-RUN chown wp:wp /var/www/html
+# RUN chown wp:wp /var/www/html
 
 WORKDIR /var/www/html
 
