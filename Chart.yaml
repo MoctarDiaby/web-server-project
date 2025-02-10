@@ -5,10 +5,10 @@ version: 0.1.0
 dependencies:
   - name: mariadb
     version: "0.1.0"
-    repository: "file://mariadb/"
+    repository: "file://mariadb"
   - name: nginx
     version: "0.1.0"
-    repository: "file://nginx/"
+    repository: "file://nginx"
   - name: wordpress
     version: "0.1.0"
-    repository: "file://wordpress/"
+    repository: "file://wordpress"
