@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile
     command: nginx -g "daemon off;"
     container_name: nginx
-    volumes:
-      - wordpress_data:/var/www/html  # Utiliser le volume partagé
+    # volumes:
+    #   - wordpress_data:/var/www/html  # Utiliser le volume partagé
     ports:
       - "80:80" # Nginx écoute sur le port 80
     networks:
@@ -24,8 +24,8 @@ services:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: wordpress_user
       WORDPRESS_DB_PASSWORD: wordpress_password
-    volumes:
-      - wordpress_data:/var/www/html
+    # volumes:
+    #   - wordpress_data:/var/www/html
     working_dir: /var/www/html
     depends_on:
       - mariadb
