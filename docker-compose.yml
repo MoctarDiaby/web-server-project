@@ -35,7 +35,7 @@ services:
       dockerfile: Dockerfile
     container_name: php
     ports:
-      - "8000"
+      - "9000"
     volumes:
       - ./src:/var/www/html
       - wordpress_data:/var/www/html
@@ -62,8 +62,8 @@ services:
       - db
     networks:
       - wordpress_net
-    ports:
-      - "9000:9000" # WordPress accessible sur le port 9000
+    # ports:
+    #   - "9000:9000" # WordPress accessible sur le port 9000
 
  # Service pour la base de données MariaDB
   db:
