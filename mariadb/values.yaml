@@ -1,0 +1,5 @@
+image: mariadb:latest
+rootPassword: example_root_password
+user: wordpress_user
+password: wordpress_password
+database: wordpressdb
