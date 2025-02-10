@@ -1,21 +1,6 @@
 # docker-compose.yml
 version: "3.8"
 services:
-  # nginx:
-  #   container_name: nginx
-  #   build: ./nginx
-  #   command: nginx -g "daemon off;"
-  #   links:
-  #     - wordpress
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./logs/nginx:/var/log/nginx
-  #     - ./src:/var/www/html
-  #     - wordpress_data:/var/www/html
-  #   networks:
-  #     - wordpress_net
-  # Service pour Nginx
   nginx:
     build:
       context: ./nginx
@@ -29,21 +14,6 @@ services:
     networks:
       - wordpress_net
 
-  # php:
-  #   build:
-  #     context: ./php
-  #     dockerfile: Dockerfile
-  #   container_name: php
-  #   ports:
-  #     - "9000:9000"
-  #   volumes:
-  #     - ./src:/var/www/html
-  #     - wordpress_data:/var/www/html
-  #   working_dir: /var/www/html
-  #   networks:
-  #     - wordpress_net    
- 
- # Service pour WordPress
   wordpress:
     build:
       context: ./wordpress
