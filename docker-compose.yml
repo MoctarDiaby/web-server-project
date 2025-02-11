@@ -3,8 +3,6 @@ version: "3.3"
 services:
   nginx:
     build:
-
-
       context: ./nginx
       dockerfile: Dockerfile
     command: nginx -g "daemon off;"
