@@ -31,6 +31,8 @@ services:
       - mariadb
     networks:
       - wordpress_net
+     ports:
+      - "9000:9000" #
 
  # Service pour la base de données MariaDB
   mariadb:
