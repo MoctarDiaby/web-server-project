@@ -1,95 +1,59 @@
-version: '3.3'
-
+# docker-compose.yml
+version: "3.3"
 services:
   nginx:
-    build: ./nginx
-    container_name: mynginx
+    build:
+
+
+      context: ./nginx
+      dockerfile: Dockerfile
+    command: nginx -g "daemon off;"
+    container_name: nginx
+    # volumes:
+    #   - wordpress_data:/var/www/html  # Utiliser le volume partagé
     ports:
-      - "80:80"
-    depends_on:
-      - wordpress
+      - "80:80" # Nginx écoute sur le port 80
+    networks:
+      - wordpress_net
 
   wordpress:
-    build: ./wordpress
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
     container_name: wordpress
     environment:
-      WORDPRESS_DB_HOST: mariadb:3306
-      WORDPRESS_DB_USER: moi
-      WORDPRESS_DB_PASSWORD: aacher
-      WORDPRESS_DB_NAME: worddb
+      WORDPRESS_DB_NAME: wordpressdb
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress_user
+      WORDPRESS_DB_PASSWORD: wordpress_password
+    # volumes:
+    #   - wordpress_data:/var/www/html
+    working_dir: /var/www/html
     depends_on:
       - mariadb
-#    ports:
- #     - "9000:80"
+    networks:
+      - wordpress_net
 
-
+ # Service pour la base de données MariaDB
   mariadb:
-    build: ./mariadb
+    build:
+      context: ./mariadb
+      dockerfile: Dockerfile
+    container_name: mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: aacherplusfort
-      MYSQL_DATABASE: worddb
-      MYSQL_USER: moi
-      MYSQL_PASSWORD: aacher
-
-
-
-# ---------------------------------------- my -------------------
-# # docker-compose.yml
-# version: "3.8"
-# services:
-#   nginx:
-#     build:
-
-
-#       context: ./nginx
-#       dockerfile: Dockerfile
-#     command: nginx -g "daemon off;"
-#     container_name: nginx
-#     # volumes:
-#     #   - wordpress_data:/var/www/html  # Utiliser le volume partagé
-#     ports:
-#       - "80:80" # Nginx écoute sur le port 80
-#     networks:
-#       - wordpress_net
-
-#   wordpress:
-#     build:
-#       context: ./wordpress
-#       dockerfile: Dockerfile
-#     container_name: wordpress
-#     environment:
-#       WORDPRESS_DB_NAME: wordpressdb
-#       WORDPRESS_DB_HOST: db:3306
-#       WORDPRESS_DB_USER: wordpress_user
-#       WORDPRESS_DB_PASSWORD: wordpress_password
-#     # volumes:
-#     #   - wordpress_data:/var/www/html
-#     working_dir: /var/www/html
-#     depends_on:
-#       - mariadb
-#     networks:
-#       - wordpress_net
-
-#  # Service pour la base de données MariaDB
-#   mariadb:
-#     build:
-#       context: ./mariadb
-#       dockerfile: Dockerfile
-#     container_name: mariadb
-#     environment:
-#       MYSQL_ROOT_PASSWORD: example_root_password
-#       MYSQL_DATABASE: wordpressdb
-#       MYSQL_USER: wordpress_user
-#       MYSQL_PASSWORD: wordpress_password
-#     volumes:
-#       - db_data:/var/lib/mysql
-#     networks:
-#       - wordpress_net
+      MYSQL_ROOT_PASSWORD: example_root_password
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_USER: wordpress_user
+      MYSQL_PASSWORD: wordpress_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress_net
       
-# networks:
-#   wordpress_net:
-#     driver: bridge
+networks:
+  wordpress_net:
+    driver: bridge
 
-# volumes:
-#   db_data:
-#   wordpress_data:  # Volume partagé entre WordPress et Nginx
+volumes:
+  db_data:
+  wordpress_data:  # Volume partagé entre WordPress et Nginx
