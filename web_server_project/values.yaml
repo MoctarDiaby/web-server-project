@@ -1,5 +1,5 @@
 nginx:
-  image: custom-nginx
+  image: nginx:last
   replicaCount: 1
   containerPort: 80
   servicePort: 80
