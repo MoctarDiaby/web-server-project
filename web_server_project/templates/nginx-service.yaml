@@ -5,6 +5,8 @@ metadata:
 spec:
   selector:
     app: nginx
+  containers:
+      - name: nginx
   ports:
     - protocol: TCP
       port: {{ .Values.nginx.servicePort }}
