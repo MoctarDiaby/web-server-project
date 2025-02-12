@@ -15,7 +15,7 @@ wordpress:
   dbName: wordpressdb
 
 mariadb:
-  image: custom-mariadb
+  image: mariadb:latest
   replicaCount: 1
   containerPort: 3306
   servicePort: 3306
