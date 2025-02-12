@@ -1,6 +1,0 @@
-image: wordpress:latest
-db:
-  host: mariadb
-  user: wordpress_user
-  password: wordpress_password
-  database: wordpressdb

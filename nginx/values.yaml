@@ -1,5 +1,0 @@
-image: nginx:latest
-nginxConfig:
-  server_name: localhost
-  ports:
-    http: 80
