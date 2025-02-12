@@ -5,7 +5,7 @@ nginx:
   servicePort: 80
 
 wordpress:
-  image: custom-wordpress
+  image: wordpress:php8.3-fpm-alpine
   replicaCount: 1
   containerPort: 9000
   servicePort: 9000
