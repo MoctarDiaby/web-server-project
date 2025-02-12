@@ -5,6 +5,8 @@ metadata:
 spec:
   selector:
     app: mariadb
+  containers:
+      - name: mariadb
   ports:
     - protocol: TCP
       port: {{ .Values.mariadb.servicePort }}
