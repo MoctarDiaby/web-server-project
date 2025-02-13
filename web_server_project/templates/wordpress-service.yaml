@@ -11,4 +11,4 @@ spec:
     - protocol: TCP
       port: {{ .Values.wordpress.servicePort }}
       targetPort: {{ .Values.wordpress.containerPort }}
-  type: ClusterIP
+  type: NodePort
