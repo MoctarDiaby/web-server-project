@@ -4,3 +4,13 @@ description: A Helm chart for deploying WordPress with Nginx and MariaDB
 type: application
 version: 0.1.0
 appVersion: latest
+dependencies:
+  - name: mariadb
+    version: "0.1.0"
+    repository: "file://mariadb"
+  - name: nginx
+    version: "0.1.0"
+    repository: "file://nginx"
+  - name: wordpress
+    version: "0.1.0"
+    repository: "file://wordpress"
