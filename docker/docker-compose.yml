@@ -21,7 +21,7 @@ services:
     container_name: wordpress
     environment:
       WORDPRESS_DB_NAME: wordpressdb
-      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_USER: wordpress_user
       WORDPRESS_DB_PASSWORD: wordpress_password
     # volumes:
