@@ -6,6 +6,7 @@ echo "remove created images ..........................."
 docker rmi wordpress:latest web-server-project_nginx web-server-project_wordpress
 docker rmi web-server-project_mariadb  
 docker rmi nginx mariadb wordpress docker_nginx docker_mariadb docker_wordpress 
+docker image ls
 echo "update scripts..........................."
 git pull
 echo "Install env ..........................."
