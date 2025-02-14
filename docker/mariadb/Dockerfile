@@ -1,5 +1,5 @@
 # Utiliser l'image officielle de MariaDB
-FROM mariadb:latest
+FROM mariadb:11.6
 
 # Exposer le port 3306 pour la communication avec la base de données
 EXPOSE 3306
