@@ -14,15 +14,21 @@ spec:
     spec:
       containers:
       - name: wordpress
-        image: {{ .Values.wordpress.image }}
-        ports:
-        - containerPort: {{ .Values.wordpress.containerPort }}
+        image: "{{ .Values.wordpress.image.repository }}:{{ .Values.wordpress.image.tag }}"
         env:
         - name: WORDPRESS_DB_HOST
-          value: {{ .Values.wordpress.dbHost }}
-        - name: WORDPRESS_DB_USER
-          value: {{ .Values.wordpress.dbUser }}
-        - name: WORDPRESS_DB_PASSWORD
-          value: {{ .Values.wordpress.dbPassword }}
+          value: "{{ .Values.wordpress.env.WORDPRESS_DB_HOST }}"
         - name: WORDPRESS_DB_NAME
-          value: {{ .Values.wordpress.dbName }}
+          value: "{{ .Values.wordpress.env.WORDPRESS_DB_NAME }}"
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secrets
+              key: dbUser
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secrets
+              key: dbPassword
+          ports:
+            - containerPort: 80

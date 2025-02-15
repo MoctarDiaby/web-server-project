@@ -1,26 +1,46 @@
 nginx:
-  image: nginx:latest
   replicaCount: 1
-  containerPort: 80
-  servicePort: 80
+  image:
+    repository: nginx
+    tag: latest
+  service:
+    type: loadbalancer
+    Port: 80
+    containerPort: 80    
 
 wordpress:
-  image: wordpress:php8.3-fpm-alpine
   replicaCount: 1
-  containerPort: 9000
-  servicePort: 9000
-  dbHost: mariadb
-  dbUser: wordpress_user
-  dbPassword: wordpress_password
-  dbName: wordpressdb
+  image:
+    repository: wordpress
+    tag: latest
+  env:
+    WORDPRESS_DB_NAME: "{{ .mariadb.env.MYSQL_DATABASE }}"
+    WORDPRESS_DB_HOST: "{{ .mariadb.image.name }} : {{ .mariadb.image.tag }} "
+    WORDPRESS_DB_USER_SECRET: "{{ .mariadb.env.MYSQL_USER_SECRET }}"
+    WORDPRESS_DB_PASSWORD_SECRET: "{{ .mariadb.env.MYSQL_PASSWORD_SECRET }}"
+  service:
+    Port: 9000
+    containerPort: 9000  
 
 mariadb:
-  image: mariadb:latest
   replicaCount: 1
-  containerPort: 3306
-  servicePort: 3306
-  rootPassword: example_root_password
-  dbName: wordpressdb
-  dbUser: wordpress_user
-  dbPassword: wordpress_password
-  storageSize: 10Gi
+  name : mariadb
+  image:
+    name: mariadb
+    tag: latest
+  env:
+    MYSQL_ROOT_PASSWORD_SECRET: rootPassword
+    MYSQL_DATABASE: wordpressdb
+    MYSQL_USER_SECRET: dbUser
+    MYSQL_PASSWORD_SECRET: dbPassword
+    servicePort: 3306
+    containerPort: 3306
+  volume:
+    size: 10Gi
+    storageClass: "standard"
+
+# secrets:
+#   mariadb-secrets:
+#     rootPassword: "d2ViLXNlcnZlci1wcm9qZWN0X21hcmlhZGItcm9vdC1wYXNzd29yZA=="
+#     dbUser: "d2ViLXNlcnZlci1wcm9qZWN0X21hcmlhZGItdXNlcg=="
+#     dbPassword: "d2ViLXNlcnZlci1wcm9qZWN0X21hcmlhZGItdXNlci1wYXNzd29yZA=="

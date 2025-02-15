@@ -1,29 +1,13 @@
-resource "aws_instance" "project_03" {
-  ami                         = var.ami
-  instance_type               = var.instance_type
-  key_name                    = var.key_name
-  security_groups             = ["${var.security_group_name}"]
-  associate_public_ip_address = true
-  root_block_device {
-    volume_size           = 20
-    volume_type           = "gp2"
-    encrypted             = true
-    delete_on_termination = true
-  }
-  provisioner "remote-exec" {
-    connection {
-      type        = "ssh"
-      user        = var.username
-      private_key = file(var.private_key_path)
-      host        = self.public_ip
-    }
-    # scripts = ["./scripts/stack.sh ${var.stack_variable}"]
-    scripts = ["./scripts/${var.script_name}"]
-  }
-  provisioner "local-exec" {
-    command = "echo -e 'instance_ip: ${self.public_ip}' >> ip_address.txt"
-  }
-  provisioner "local-exec" {
-    command = "echo -e '\nansible_host: ${self.public_ip}' > ../03_ansible/host_vars/machine-1.yaml"
+resource "aws_instance" "web" {
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = "t2.micro"
+  subnet_id              = module.networking.public_subnet_id
+  security_groups        = [module.networking.web_sg]
+  key_name               = var.key_name
+
+  user_data = file("${path.module}/user_data.sh")
+
+  tags = {
+    Name = "${var.namespace}-wordpress-server"
   }
 }

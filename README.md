@@ -28,6 +28,6 @@ Déployer la solution en production
 # Première étape: déploiement via Docker-compose
 docker-compose up -d
 
-# Première étape: déploiement via helm
-helm install ./web-server-project --name web-server-project
+# Seconde étape: déploiement via helm
+helm install web-server-project kubernetes_helm/ -n test
 

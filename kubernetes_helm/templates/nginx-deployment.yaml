@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: {{ .Values.nginx.image }}
+        image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
         ports:
-        - containerPort: {{ .Values.nginx.containerPort }}
+        - containerPort: {{ .Values.nginx.service.containerPort }}
         volumeMounts:
             - name: nginx-conf
               mountPath: /etc/nginx/nginx.conf

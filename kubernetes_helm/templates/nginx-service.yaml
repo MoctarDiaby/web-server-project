@@ -9,6 +9,6 @@ spec:
       - name: nginx
   ports:
     - protocol: TCP
-      port: {{ .Values.nginx.servicePort }}
-      targetPort: {{ .Values.nginx.containerPort }}
+      port: {{ .Values.nginx.service.Port }}
+      containerPort: {{ .Values.nginx.service.containerPort }}
   type: NodePort

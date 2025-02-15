@@ -9,6 +9,6 @@ spec:
       - name: mariadb
   ports:
     - protocol: TCP
-      port: {{ .Values.mariadb.servicePort }}
-      targetPort: {{ .Values.mariadb.containerPort }}
+      port: {{ .Values.mariadb.env.servicePort }}
+      targetPort: {{ .Values.mariadb.env.containerPort }}
   type: ClusterIP

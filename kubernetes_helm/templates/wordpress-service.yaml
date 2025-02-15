@@ -9,6 +9,6 @@ spec:
       - name: mariadb
   ports:
     - protocol: TCP
-      port: {{ .Values.wordpress.servicePort }}
-      targetPort: {{ .Values.wordpress.containerPort }}
+      port: {{ .Values.wordpress.service.Port }}
+      containerPort: {{ .Values.wordpress.service.containerPort }}
   type: NodePort

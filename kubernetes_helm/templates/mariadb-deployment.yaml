@@ -13,23 +13,30 @@ spec:
         app: mariadb
     spec:
       containers:
-      - name: mariadb
-        image: {{ .Values.mariadb.image }}
-        ports:
-        - containerPort: {{ .Values.mariadb.containerPort }}
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: {{ .Values.mariadb.rootPassword }}
-        - name: MYSQL_DATABASE
-          value: {{ .Values.mariadb.dbName }}
-        - name: MYSQL_USER
-          value: {{ .Values.mariadb.dbUser }}
-        - name: MYSQL_PASSWORD
-          value: {{ .Values.mariadb.dbPassword }}
-        volumeMounts:
-        - mountPath: /var/lib/mysql
-          name: mariadb-storage
+        - name: mariadb
+          image: "{{ .Values.mariadb.image.name }}:{{ .Values.mariadb.image.tag }}"
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: rootPassword
+          - name: MYSQL_DATABASE
+            value: {{ .Values.mariadb.env.MYSQL_DATABASE }}
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: dbUser
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: dbPassword
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
       volumes:
-      - name: mariadb-storage
-        persistentVolumeClaim:
-          claimName: mariadb-pvc
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: mariadb-pvc

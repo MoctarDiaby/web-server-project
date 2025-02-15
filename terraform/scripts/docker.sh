@@ -6,4 +6,4 @@ sudo sh install-docker.sh
 sudo systemctl start docker
 sudo usermod -aG docker ubuntu
 sudo systemctl restart docker
-echo "tout roule :)" 
+echo "Docker deployed with success :)" 
