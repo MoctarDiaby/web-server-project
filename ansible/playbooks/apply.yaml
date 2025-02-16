@@ -1,0 +1,11 @@
+---
+- name: apply manifest
+  hosts: localhost
+  become: true 
+  tasks:    
+    - name: apply kubernetes manifest
+      command: "kubectl --kubeconfig=./k3s.yaml apply -k ~/projet/web-server-project/web-server-project/kubernetes_helm --validate=false"
+      tags: create
+    - name: apply kubernetes manifest
+      command: "kubectl --kubeconfig=./k3s.yaml apply -k ~/projet/web-server-project/web-server-project/kubernetes_helm --validate=false"
+      tags: delete

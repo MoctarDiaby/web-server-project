@@ -4,6 +4,6 @@
   become: true 
   roles:
     # - k3s_role
-    - odoo_role
-    - pgadmin_role
-    - icwebapp_role
+    - mariadb_role
+    - wordpress_role
+    - nginx_role

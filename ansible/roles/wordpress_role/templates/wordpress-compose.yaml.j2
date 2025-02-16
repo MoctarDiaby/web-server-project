@@ -1,14 +1,14 @@
 services:
-  {{ odoo_name }}:
-    image: {{ odoo_image }}
-    container_name: {{ odoo_name }}
+  {{ wordpress_name }}:
+    image: {{ wordpress_image }}
+    container_name: {{ wordpress_name }}
     depends_on:
       - {{ database_name }}
     ports:
-      - "{{ odoo_host_port }}:8069"
+      - "{{ wordpress_host_port }}:9000"
     volumes:
-      - {{  odoo_web_data }}:/var/lib/odoo
-      - ./config:/etc/odoo
+      - {{  wordpress_web_data }}:/var/lib/wordpress
+      - ./config:/etc/wordpress
       - ./addons:/mnt/extra-addons
     environment:
       - HOST= {{ database_name }}
@@ -23,8 +23,8 @@ services:
       - POSTGRES_USER={{ database_username }}
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
-      - {{ odoo_db_data }}:/var/lib/postgresql/data/pgdata
+      - {{ wordpress_db_data }}:/var/lib/postgresql/data/pgdata
 
 volumes:
-  {{ odoo_web_data }}:
-  {{ odoo_db_data }}:
+  {{ wordpress_web_data }}:
+  {{ wordpress_db_data }}:

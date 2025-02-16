@@ -1,0 +1,9 @@
+---
+# defaults file for wordpress_role
+maariadb_image: wordpress:php8.3-fpm-alpine
+wordpress_name: wordpress_web
+
+WORDPRESS_DB_NAME: wordpressdb
+WORDPRESS_DB_HOST: mariadb:3306
+WORDPRESS_DB_USER: wordpress_user
+WORDPRESS_DB_PASSWORD: wordpress_password
