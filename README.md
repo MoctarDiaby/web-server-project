@@ -31,3 +31,8 @@ docker-compose up -d
 # Seconde étape: déploiement via helm
 helm install web-server-project kubernetes_helm/ -n test
 
+# Troisième étape: déploiement via terraform
+
+
+# Troisième étape: déploiement via ansible
+
