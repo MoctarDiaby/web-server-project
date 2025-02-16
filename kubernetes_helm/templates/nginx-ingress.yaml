@@ -4,20 +4,26 @@ metadata:
   name: nginx-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: 128m
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/proxy-body-size: 128m
 spec:
   rules:
-    - host: web-server-project.abo.fr #{{ .Values.nginx.service.type | default "localhost" }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: nginx
-                port:
-                  number: 80
+    # - host: web.server.project.abo.fr #{{ .Values.nginx.service.type | default "localhost" }}
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: nginx
+    #             port:
+    #               number: 80
+    - http:
+      paths:
+      - path: /myservice
+        backend:
+          serviceName: myservice
+          servicePort: 9000
   # tls:
   #   - hosts:
   #       - {{ .Values.nginx.service.type | default "localhost" }}

@@ -1,3 +1,6 @@
+project:
+  name: "web-server-project"
+  namespace: "test"
 nginx:
   replicaCount: 1
   image:
@@ -5,14 +8,16 @@ nginx:
     tag: latest
   service:
     type: loadbalancer
-    Port: 80
-    containerPort: 80    
+    Port: 8080
+    containerPort: 8080
+    targetPort: 80
+    nodePort: 30001
 
 wordpress:
   replicaCount: 1
   image:
-    repository: wordpress
-    tag: latest
+    repository: wordpress #wordpress
+    tag: php8.3-fpm-alpine #latest
   env:
     WORDPRESS_DB_NAME: "{{ .mariadb.env.MYSQL_DATABASE }}"
     WORDPRESS_DB_HOST: "{{ .mariadb.image.name }} : {{ .mariadb.image.tag }} "
@@ -20,7 +25,8 @@ wordpress:
     WORDPRESS_DB_PASSWORD_SECRET: "{{ .mariadb.env.MYSQL_PASSWORD_SECRET }}"
   service:
     Port: 9000
-    containerPort: 9000  
+    containerPort: 9000
+    targetPort: 9000
 
 mariadb:
   replicaCount: 1

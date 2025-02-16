@@ -6,11 +6,11 @@ spec:
   replicas: {{ .Values.mariadb.replicaCount }}
   selector:
     matchLabels:
-      app: mariadb
+      app: web-server-project-app
   template:
     metadata:
       labels:
-        app: mariadb
+        app: web-server-project-app
     spec:
       containers:
         - name: mariadb
@@ -33,10 +33,10 @@ spec:
               secretKeyRef:
                 name: mariadb-secrets
                 key: dbPassword
-          volumeMounts:
-            - name: mariadb-data
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: mariadb-data
-          persistentVolumeClaim:
-            claimName: mariadb-pvc
+          # volumeMounts:
+          #   - name: mariadb-data
+          #     mountPath: /var/lib/mysql
+      # volumes:
+      #   - name: mariadb-data
+      #     persistentVolumeClaim:
+      #       claimName: mariadb-pvc2

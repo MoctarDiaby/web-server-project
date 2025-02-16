@@ -4,11 +4,10 @@ metadata:
   name: nginx
 spec:
   selector:
-    app: nginx
-  containers:
-      - name: nginx
+    app: web-server-project-app
   ports:
     - protocol: TCP
       port: {{ .Values.nginx.service.Port }}
-      containerPort: {{ .Values.nginx.service.containerPort }}
+      targetPort: {{ .Values.nginx.service.targetPort }}
+      nodePort: {{ .Values.nginx.service.nodePort }}
   type: NodePort

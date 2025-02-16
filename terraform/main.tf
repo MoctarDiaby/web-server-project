@@ -1,3 +1,17 @@
+provider "aws" {
+  region     = "eu-west-3"
+  access_key = "AKIATFBMPCST2QOXW4L3"
+  secret_key = "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"
+  # profile = "default"
+}
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 }

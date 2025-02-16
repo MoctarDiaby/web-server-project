@@ -4,11 +4,9 @@ metadata:
   name: wordpress
 spec:
   selector:
-    app: wordpress
-  containers:
-      - name: mariadb
+    app: web-server-project-app
   ports:
     - protocol: TCP
       port: {{ .Values.wordpress.service.Port }}
-      containerPort: {{ .Values.wordpress.service.containerPort }}
-  type: NodePort
+      targetPort: {{ .Values.wordpress.service.targetPort }}
+  #type: NodePort
