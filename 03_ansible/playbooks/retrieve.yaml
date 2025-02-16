@@ -1,0 +1,17 @@
+---
+- name: retrieve kubeconfig
+  hosts: all
+  become: true 
+  tasks:
+    - name: retrieve kubeconfig
+      fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: ./k3s.yaml
+        flat: yes
+    - name: update k3s file 
+      local_action:
+        module: lineinfile
+        path: ./k3s.yaml
+        regexp: '    server: https://127.0.0.1:6443'
+        line: '    server: https://{{ ansible_host }}:6443'
+    

@@ -1,0 +1,7 @@
+---
+# handlers file for icwebapp_role
+- name: generate compose file icwebapp
+  template:
+    src: "icwebapp-compose.yaml.j2"
+    dest: "/home/ubuntu/icwebapp-compose.yaml"
+    mode: "0555"

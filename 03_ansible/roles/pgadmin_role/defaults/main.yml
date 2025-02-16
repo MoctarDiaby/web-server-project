@@ -1,0 +1,5 @@
+---
+# defaults file for pgadmin_role
+pgadmin_name: pgadmin
+pgadmin_host_port: 80
+pgadmin_image: dpage/pgadmin4

@@ -1,0 +1,9 @@
+---
+- name: Deploy stack compose
+  hosts: all
+  become: true 
+  roles:
+    # - k3s_role
+    - odoo_role
+    - pgadmin_role
+    - icwebapp_role

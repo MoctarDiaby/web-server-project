@@ -1,0 +1,11 @@
+---
+- name: apply manifest
+  hosts: localhost
+  become: true 
+  tasks:    
+    - name: apply kubernetes manifest
+      command: "kubectl --kubeconfig=./k3s.yaml apply -k ~/datascientest-projet-03/04_kubernetes --validate=false"
+      tags: create
+    - name: apply kubernetes manifest
+      command: "kubectl --kubeconfig=./k3s.yaml apply -k ~/datascientest-projet-03/04_kubernetes --validate=false"
+      tags: delete
