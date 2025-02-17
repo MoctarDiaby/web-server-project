@@ -1,0 +1,7 @@
+---
+# vars file for mariadb_role
+
+ mariadb_root_password: example_root_password
+ mariadb_name: wordpressdb
+ mariadb_user: wordpress_user
+ mariadb_password: wordpress_password

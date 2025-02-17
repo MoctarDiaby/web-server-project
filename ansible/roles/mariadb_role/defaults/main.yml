@@ -1,0 +1,5 @@
+---
+# defaults file for mariadb_role
+mariadb_name: mariadb
+mariadb_host_port: 3306
+mariadb_image: mariadb:11

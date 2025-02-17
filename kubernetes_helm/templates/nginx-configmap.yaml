@@ -13,8 +13,6 @@ data:
       server {
           listen 80;
 
-          server_name web-server-project.com;
-  
           root /var/www/html;  # Le volume partagé avec WordPress
   
           index index.php index.html index.htm;

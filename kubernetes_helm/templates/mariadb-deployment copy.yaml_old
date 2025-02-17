@@ -15,14 +15,24 @@ spec:
       containers:
         - name: mariadb
           image: "{{ .Values.mariadb.image.name }}:{{ .Values.mariadb.image.tag }}"
-          ports:
-          - containerPort: 3306
           env:
-            MYSQL_ROOT_PASSWORD: rootpassword
-            MYSQL_DATABASE: wordpressdb
-            MYSQL_USER: wordpress_user
-            MYSQL_PASSWORD: wordpress_password
-            
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: rootPassword
+          - name: MYSQL_DATABASE
+            value: {{ .Values.mariadb.env.MYSQL_DATABASE }}
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: dbUser
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-secrets
+                key: dbPassword
           # volumeMounts:
           #   - name: mariadb-data
           #     mountPath: /var/lib/mysql

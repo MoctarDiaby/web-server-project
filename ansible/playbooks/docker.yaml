@@ -5,5 +5,5 @@
   roles:
     # - k3s_role
     - mariadb_role
-    - wordpress_role
-    - nginx_role
+    # - wordpress_role
+    # - nginx_role

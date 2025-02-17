@@ -1,6 +1,6 @@
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
-export my_namespace="test-2-2"
+export my_namespace="test"
 
 kubectl create namespace $my_namespace
 

@@ -4,7 +4,7 @@ metadata:
   name: wordpress
 spec:
   selector:
-    app: web-server-project-app
+    app: wordpress
   ports:
     - protocol: TCP
       port: {{ .Values.wordpress.service.Port }}

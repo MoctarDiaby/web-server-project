@@ -4,7 +4,7 @@ metadata:
   name: nginx
 spec:
   selector:
-    app: web-server-project-app
+    app: nginx
   ports:
     - protocol: TCP
       port: {{ .Values.nginx.service.Port }}

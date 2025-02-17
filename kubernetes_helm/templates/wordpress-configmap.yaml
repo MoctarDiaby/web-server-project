@@ -5,10 +5,25 @@ metadata:
 data:
   wp-config.php: |
     <?php
-    define('DB_NAME', "{{ .Values.wordpress.env.WORDPRESS_DB_NAME }}");
-    define('DB_HOST', "{{ .Values.wordpress.env.WORDPRESS_DB_HOST}}");
-    define('DB_USER', "{{ .Values.wordpress.env.WORDPRESS_DB_USER_SECRET }}");
-    define('DB_PASSWORD', "{{ .Values.wordpress.env.MYSQL_PASSWORD_SECRET}}");
+    # define('DB_NAME', "{{ .Values.wordpress.env.WORDPRESS_DB_NAME }}");
+    # define('DB_HOST', "{{ .Values.wordpress.env.WORDPRESS_DB_HOST}}");
+    # define('DB_USER', "{{ .Values.wordpress.env.WORDPRESS_DB_USER_SECRET }}");
+    # define('DB_PASSWORD', "{{ .Values.wordpress.env.MYSQL_PASSWORD_SECRET}}");
+
+    // ** Database settings - You can get this info from your web host ** //
+    /** The name of the database for WordPress */
+    define( 'DB_NAME', 'wordpressdb' );
+
+    /** Database username */
+    define( 'DB_USER', 'wordpress_user' );
+
+    /** Database password */
+    define( 'DB_PASSWORD', 'wordpress_password' );
+
+    /** Database hostname */
+    define( 'DB_HOST', 'mariadb' );    
+
+
     define('DB_CHARSET', 'utf8');
     define('DB_COLLATE', '');
 

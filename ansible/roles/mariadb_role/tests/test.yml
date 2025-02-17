@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - pgadmin_role
+    - pmariadb_role
